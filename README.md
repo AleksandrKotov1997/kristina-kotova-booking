@@ -1,6 +1,6 @@
-# BookFlow Admin Dashboard
+# Kristina Kotova Booking
 
-Admin dashboard for managing booking requests.
+Beauty booking website for Kristina Kotova Lash & Brow Studio.
 
 ## Stack
 

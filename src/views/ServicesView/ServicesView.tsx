@@ -3,12 +3,12 @@
 import { Typography } from "antd";
 import { AppLayout } from "@/components/AppLayout";
 
-export const RequestsView = () => {
+export const ServicesView = () => {
   return (
     <AppLayout>
-      <Typography.Title>Requests</Typography.Title>
+      <Typography.Title>Services</Typography.Title>
       <Typography.Paragraph>
-        List and manage all incoming booking requests here.
+        Explore lash and brow services available for booking.
       </Typography.Paragraph>
     </AppLayout>
   );

@@ -11,9 +11,9 @@ import Image from "next/image";
 import styles from "./AppHeader.module.css";
 
 const navigationItems: MenuProps["items"] = [
-  { key: "/", label: <Link href="/">Overview</Link> },
-  { key: "/dashboard", label: <Link href="/dashboard">Dashboard</Link> },
-  { key: "/requests", label: <Link href="/requests">Requests</Link> },
+  { key: "/", label: <Link href="/">Home</Link> },
+  { key: "/services", label: <Link href="/services">Services</Link> },
+  { key: "/booking", label: <Link href="/booking">Booking</Link> },
 ];
 
 export const AppHeader = () => {
@@ -25,14 +25,14 @@ export const AppHeader = () => {
       <div className={styles.inner}>
         <div className={styles.brand}>
           <Image
-            src="/bookflow-logo.svg"
+            src="/kristina-kotova-logo.svg"
             alt=""
             className={styles.logo}
             width={32}
             height={32}
           />
           <Typography.Text className={styles.brandText}>
-            BookFlow Admin
+            Kristina Kotova
           </Typography.Text>
         </div>
         <Menu
@@ -43,10 +43,10 @@ export const AppHeader = () => {
         />
         <div className={styles.actions}>
           <Button className={styles.roleButton}>
-            {currentUser ? ROLE_LABELS[currentUser.role] : "Manager"}
+            {currentUser ? ROLE_LABELS[currentUser.role] : "Master"}
           </Button>
           <Avatar className={styles.avatar}>
-            {currentUser ? currentUser.initials : "AK"}
+            {currentUser ? currentUser.initials : "КК"}
           </Avatar>
         </div>
       </div>

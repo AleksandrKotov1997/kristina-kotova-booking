@@ -3,8 +3,8 @@ import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BookFlow Admin Dashboard",
-  description: "Admin dashboard for managing booking requests",
+  title: "Kristina Kotova Booking",
+  description: "Beauty booking website for Kristina Kotova Lash & Brow Studio",
 };
 
 export default function RootLayout({

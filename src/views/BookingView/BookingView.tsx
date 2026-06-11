@@ -3,12 +3,13 @@
 import { Typography } from "antd";
 import { AppLayout } from "@/components/AppLayout";
 
-export const DashboardView = () => {
+export const BookingView = () => {
   return (
     <AppLayout>
-      <Typography.Title>Dashboard</Typography.Title>
+      <Typography.Title>Booking</Typography.Title>
       <Typography.Paragraph>
-        Overview of booking request metrics and current processing status.
+        Choose a service, date, and available time slot to send a booking
+        request.
       </Typography.Paragraph>
     </AppLayout>
   );
