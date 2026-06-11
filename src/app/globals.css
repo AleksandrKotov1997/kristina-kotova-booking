@@ -1,3 +1,16 @@
+:root {
+  --color-primary: #1677ff;
+  --color-secondary: #7c3aed;
+
+  --color-background: #f5f7fb;
+  --color-surface: #ffffff;
+
+  --color-border: #e5eaf2;
+
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+}
+
 html {
   height: 100%;
 }

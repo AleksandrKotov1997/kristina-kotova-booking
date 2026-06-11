@@ -1,0 +1,60 @@
+.header {
+  height: 64px;
+  padding: 0;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inner {
+  width: 100%;
+  max-width: 1400px;
+  height: 64px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 10px;
+}
+
+.logo {
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.brandText {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.menu {
+  background: transparent;
+  border-bottom: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.roleButton {
+  height: 36px;
+  padding: 0 16px;
+  border-color: var(--color-border);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.avatar {
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-weight: 600;
+}

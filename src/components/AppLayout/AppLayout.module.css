@@ -1,0 +1,14 @@
+.layout {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.content {
+  padding: 32px;
+}
+
+.main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
