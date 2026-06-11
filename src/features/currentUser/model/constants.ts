@@ -1,22 +1,15 @@
 import type { Role, CurrentUser } from "./types";
 
 export const ROLE_LABELS = {
-  manager: "Manager",
-  operator: "Operator",
+  master: "Master",
 } satisfies Record<Role, string>;
 
 export const DEMO_USERS: CurrentUser[] = [
   {
-    id: "manager-1",
-    name: "Aleksandr Kotov",
-    initials: "AK",
-    role: "manager",
-  },
-  {
-    id: "operator-1",
+    id: "master-1",
     name: "Kristina Kotova",
-    initials: "KK",
-    role: "operator",
+    initials: "КК",
+    role: "master",
   },
 ];
 

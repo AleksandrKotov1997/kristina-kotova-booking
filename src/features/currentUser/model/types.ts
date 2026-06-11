@@ -1,4 +1,4 @@
-export type Role = "manager" | "operator";
+export type Role = "master";
 
 export interface CurrentUser {
   id: string;
