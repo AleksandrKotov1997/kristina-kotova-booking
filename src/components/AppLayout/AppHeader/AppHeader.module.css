@@ -10,32 +10,67 @@
   max-width: 1400px;
   height: 64px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
-  gap: 32px;
+  gap: var(--space-8);
 }
 
 .brand {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .logo {
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
   object-fit: contain;
+}
+
+.brandTexts {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
 }
 
 .brandText {
   font-size: 16px;
   font-weight: 600;
+  color: var(--color-text);
+}
+
+.brandSubtitle {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
 }
 
 .menu {
   background: transparent;
   border-bottom: none;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+.menuLink {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color var(--transition-base);
+}
+
+.menuLink:hover {
+  color: var(--color-primary);
+}
+
+.menuLinkActive {
+  color: var(--color-primary);
 }
 
 .actions {
