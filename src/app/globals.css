@@ -1,18 +1,36 @@
 :root {
+  color-scheme: light;
+
+  --font-body: var(--font-nunito), Arial, sans-serif;
+  --font-display: var(--font-dm-serif-display), Georgia, serif;
+
+  --font-size-xs: 10px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.5;
+  --letter-spacing-brand: 0.36px;
+  --letter-spacing-label: 1.4px;
+  --letter-spacing-navigation: 0.28px;
+
   --color-page-bg: #fbf2ea;
   --color-section-bg: #fff7f0;
-  --color-surface: #fffaf6;
+  --color-surface: #fdf8f4;
   --color-surface-muted: #f6e7dc;
 
-  --color-primary: #b86f4a;
+  --color-primary: #b5714a;
   --color-primary-hover: #a65f3e;
   --color-primary-soft: #ead2c3;
 
   --color-accent: #d89a73;
   --color-accent-soft: #f3ded1;
 
-  --color-text: #3a302b;
-  --color-text-muted: #7a6c64;
+  --color-text: #3d3530;
+  --color-text-muted: #8a756a;
   --color-text-soft: #a67a63;
   --color-text-light: #ffffff;
 
@@ -25,6 +43,7 @@
   --radius-xl: 36px;
   --radius-pill: 999px;
 
+  --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
@@ -37,22 +56,26 @@
   --space-20: 80px;
 
   --container-width: 1180px;
-  --header-height: 88px;
+  --header-height: 72px;
+  --brand-logo-size: 36px;
+  --control-height: 42px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 4px;
+  --z-index-header: 10;
 
   --shadow-soft: 0 16px 40px rgba(98, 63, 43, 0.08);
   --shadow-card: 0 24px 70px rgba(98, 63, 43, 0.12);
-
   --transition-base: 180ms ease;
 }
 
 html {
   height: 100%;
+  scroll-padding-top: calc(var(--header-height) + var(--space-4));
 }
 
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
 }
 
 body {
@@ -61,7 +84,9 @@ body {
   flex-direction: column;
   background: var(--color-page-bg);
   color: var(--color-text);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -75,4 +100,15 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-primary);
+  outline-offset: var(--focus-ring-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-base: 0ms;
+  }
 }

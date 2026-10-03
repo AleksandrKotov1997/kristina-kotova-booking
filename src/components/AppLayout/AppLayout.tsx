@@ -1,21 +1,18 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { Layout } from "antd";
 import { AppHeader } from "./AppHeader";
 import styles from "./AppLayout.module.css";
 
-interface Props {
+interface AppLayoutProps {
   children: ReactNode;
 }
 
-export const AppLayout = ({ children }: Props) => {
+export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
-    <Layout className={styles.layout}>
+    <div className={styles.layout}>
       <AppHeader />
-      <Layout.Content className={styles.content}>
-        <main className={styles.main}>{children}</main>
-      </Layout.Content>
-    </Layout>
+      <main className={styles.content}>
+        <div className={styles.container}>{children}</div>
+      </main>
+    </div>
   );
 };
