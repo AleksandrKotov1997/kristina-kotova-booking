@@ -10,9 +10,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <div className={styles.layout}>
       <AppHeader />
-      <main className={styles.content}>
-        <div className={styles.container}>{children}</div>
-      </main>
+      <main className={styles.content}>{children}</main>
     </div>
   );
 };

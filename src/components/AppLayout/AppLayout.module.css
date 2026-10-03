@@ -8,11 +8,4 @@
 
 .content {
   flex: 1;
-  padding: var(--space-8);
-}
-
-.container {
-  width: 100%;
-  max-width: var(--container-width);
-  margin: 0 auto;
 }

@@ -1,12 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ActionLink } from "@/components/ActionLink";
+import { PageContainer } from "@/components/PageContainer";
 import { AppHeaderNavigation } from "./AppHeaderNavigation";
 import styles from "./AppHeader.module.css";
 
 export const AppHeader = () => {
   return (
     <header className={styles.header}>
-      <div className={styles.inner}>
+      <PageContainer className={styles.inner}>
         <Link
           href="/"
           className={styles.brand}
@@ -25,10 +27,10 @@ export const AppHeader = () => {
           </span>
         </Link>
         <AppHeaderNavigation />
-        <Link href="/booking" className={styles.bookingLink}>
+        <ActionLink href="/booking" size="compact">
           Записаться
-        </Link>
-      </div>
+        </ActionLink>
+      </PageContainer>
     </header>
   );
 };
