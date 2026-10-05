@@ -121,7 +121,8 @@ API и политика RLS разрешают чтение только акт�
 ```bash
 pnpm supabase login
 pnpm supabase link --project-ref YOUR_PROJECT_REF
-pnpm supabase db push --include-seed
+pnpm supabase db push
+pnpm supabase db query --linked --file supabase/seed.sql
 ```
 
 Seed добавляет согласованный начальный каталог. Повторное применение
@@ -135,4 +136,49 @@ Seed добавляет согласованный начальный катал
 
 ```bash
 pnpm supabase db query --linked --file supabase/tests/services.sql
+```
+
+## Галерея работ на главной
+
+Блок «Работы» получает первые восемь активных записей через API.
+Карточки и просмотр фотографий находятся в общих компонентах GalleryImageCard
+и WorkGallery. Просмотр Ant Design поддерживает стрелки, Escape, счётчик,
+масштабирование и возврат фокуса. Предусмотрены загрузка, ошибка с повтором,
+пустой список и недоступное отдельное изображение.
+
+GET /api/gallery возвращает { data: GalleryImage[] }. Необязательные параметры:
+category — lashes или brows; limit — целое число от 1 до 100, по умолчанию 24.
+Неизвестные и повторные параметры отклоняются с 400; недоступная база даёт 503.
+Сортировка — sort_order, затем id. На главной запрашивается limit=8.
+
+Таблица public.gallery_images хранит title, image_url, category, is_active,
+sort_order и временные метки. RLS разрешает anon/authenticated только чтение
+активных записей. Изменение URL, названия, порядка и видимости выполняется
+в Supabase Table Editor; публичного редактирования нет.
+
+Фотографии выбраны с Pexels по согласованию с владельцем проекта.
+Это иллюстрации, а не работы Кристины; подпись блока сообщает об этом.
+Ссылки на изображения находятся в seed, а не в компонентах. Для замены
+достаточно изменить image_url соответствующей записи на HTTPS-ссылку
+реальной фотографии, например из Supabase Storage. Повторный seed
+сохраняет существующие записи. Перед production нужно заменить снимки
+и обновить вводный текст блока. Мобильная адаптация и /works — следующие этапы ТЗ.
+
+Источники: [лицензия Pexels](https://www.pexels.com/legal-pages/license).
+
+| Карточка             | Фотограф и источник                                                                                       |
+| -------------------- | --------------------------------------------------------------------------------------------------------- |
+| Классический объём   | [Joice Rivas](https://www.pexels.com/photo/woman-doing-lashes-at-beautician-16554435/)                    |
+| Голливудский объём   | [El gringo photo](https://www.pexels.com/photo/a-woman-with-beautiful-eyelashes-10698006/)                |
+| 2D/3D эффект         | [Layla Luany](https://www.pexels.com/photo/professional-eyelash-extension-application-close-up-33723106/) |
+| Ламинирование ресниц | [Angela Roma](https://www.pexels.com/photo/eye-with-eyelashes-of-faceless-woman-7479982/)                 |
+| Архитектура бровей   | [Gabriel Puyén](https://www.pexels.com/photo/brunette-woman-at-eyebrow-styling-6135650/)                  |
+| Ламинирование бровей | [Ron Lach](https://www.pexels.com/photo/woman-applying-eyebrow-makeup-8129900/)                           |
+| Натуральный эффект   | [Kássia Melo](https://www.pexels.com/photo/close-up-of-woman-s-eyelashes-15353405/)                       |
+| Окрашивание хной     | [Bob Media](https://www.pexels.com/photo/professional-eyebrow-styling-5475901/)                           |
+
+Проверка ограничений галереи, updated_at и RLS выполняется с откатом:
+
+```bash
+pnpm supabase db query --linked --file supabase/tests/gallery.sql
 ```

@@ -14,3 +14,19 @@ values
   ('b24d3811-31f8-482f-9d85-cd010aedf502', 'brows', 'Ламинирование бровей', 'Укладка и ламинирование бровей. Густой, ухоженный вид на 4–6 недель без лишних усилий каждое утро.', 1800, 60, 3),
   ('b7980ecf-7bba-4bde-ad7c-44c19c7e1215', 'brows', 'Коррекция бровей', 'Поддерживающая коррекция формы. Подходит тем, кто уже поставил форму и хочет её поддерживать.', 700, 30, 4)
 on conflict (id) do nothing;
+
+
+-- Стоковые иллюстрации из Pexels по согласованию с владельцем проекта.
+-- Меняются через image_url; повторный seed не перезаписывает реальные снимки.
+insert into public.gallery_images
+  (id, title, image_url, category, sort_order)
+values
+  ('142e3502-882d-474c-93c4-24fd0714bbbb', 'Классический объём', 'https://images.pexels.com/photos/16554435/pexels-photo-16554435.jpeg?auto=compress&cs=tinysrgb&w=1200', 'lashes', 1),
+  ('0b23e7d7-fd6c-42e3-bec6-1857fbfb4a04', 'Голливудский объём', 'https://images.pexels.com/photos/10698006/pexels-photo-10698006.jpeg?auto=compress&cs=tinysrgb&w=1200', 'lashes', 2),
+  ('f8ca9185-05dc-4544-a6aa-785477423bf3', '2D/3D эффект', 'https://images.pexels.com/photos/33723106/pexels-photo-33723106.jpeg?auto=compress&cs=tinysrgb&w=1200', 'lashes', 3),
+  ('66ebf708-0d9e-4cea-b280-fb9e75f5e975', 'Ламинирование ресниц', 'https://images.pexels.com/photos/7479982/pexels-photo-7479982.jpeg?auto=compress&cs=tinysrgb&w=1200', 'lashes', 4),
+  ('7262d108-ae02-4064-97ed-32ccac3cba4f', 'Архитектура бровей', 'https://images.pexels.com/photos/6135650/pexels-photo-6135650.jpeg?auto=compress&cs=tinysrgb&w=1200', 'brows', 5),
+  ('455c7b6e-08fb-46af-a8e1-4cc14c03a92c', 'Ламинирование бровей', 'https://images.pexels.com/photos/8129900/pexels-photo-8129900.jpeg?auto=compress&cs=tinysrgb&w=1200', 'brows', 6),
+  ('5751e00c-fca8-4b54-9982-7a6430e368d6', 'Натуральный эффект', 'https://images.pexels.com/photos/15353405/pexels-photo-15353405.jpeg?auto=compress&cs=tinysrgb&w=1200', 'lashes', 7),
+  ('a98a0a28-d96c-43b3-80c2-4a9076b0d70b', 'Окрашивание хной', 'https://images.pexels.com/photos/5475901/pexels-photo-5475901.jpeg?auto=compress&cs=tinysrgb&w=1200', 'brows', 8)
+on conflict (id) do nothing;

@@ -1,0 +1,1 @@
+export { WorkGallery } from "./WorkGallery";
