@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfigProvider } from "antd";
+import ruRU from "antd/locale/ru_RU";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -14,7 +15,10 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider theme={{ token: { fontFamily: "var(--font-body)" } }}>
+      <ConfigProvider
+        locale={ruRU}
+        theme={{ token: { fontFamily: "var(--font-body)" } }}
+      >
         {children}
       </ConfigProvider>
     </QueryClientProvider>
