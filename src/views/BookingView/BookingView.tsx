@@ -1,16 +1,16 @@
 "use client";
 
 import { Typography } from "antd";
-import { AppLayout } from "@/components/AppLayout";
+import { PageContainer } from "@/components/PageContainer";
 
 export const BookingView = () => {
   return (
-    <AppLayout>
+    <PageContainer withVerticalPadding>
       <Typography.Title>Booking</Typography.Title>
       <Typography.Paragraph>
         Choose a service, date, and available time slot to send a booking
         request.
       </Typography.Paragraph>
-    </AppLayout>
+    </PageContainer>
   );
 };

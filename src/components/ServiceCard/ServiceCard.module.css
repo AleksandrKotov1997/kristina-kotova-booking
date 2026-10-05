@@ -1,0 +1,96 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-7) var(--space-7) var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-service-card);
+  box-shadow: var(--shadow-service-card);
+  transition:
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: var(--color-primary-soft);
+  box-shadow: var(--shadow-floating-card);
+}
+
+.heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-service-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-heading);
+}
+
+.price {
+  flex-shrink: 0;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+.description {
+  flex: 1;
+  margin-bottom: var(--space-5);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-label);
+}
+
+.duration,
+.bookingLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.duration {
+  color: var(--color-text-muted);
+}
+
+.bookingLink {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  transition: color var(--transition-base);
+}
+
+.bookingLink:hover {
+  color: var(--color-primary-hover);
+}
+
+.icon {
+  width: var(--font-size-sm);
+  height: var(--font-size-sm);
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

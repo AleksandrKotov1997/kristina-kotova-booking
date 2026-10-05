@@ -1,0 +1,244 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(100svh - var(--header-height));
+  overflow: hidden;
+  background: var(--gradient-hero);
+}
+
+.hero::before,
+.hero::after {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  content: "";
+}
+
+.hero::before {
+  top: 10%;
+  right: -8%;
+  width: 480px;
+  height: 480px;
+  background: var(--gradient-hero-warm-glow);
+}
+
+.hero::after {
+  bottom: 5%;
+  left: -6%;
+  width: 360px;
+  height: 360px;
+  background: var(--gradient-hero-copper-glow);
+}
+
+.inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-20);
+  padding-block: var(--space-20);
+}
+
+.content {
+  min-width: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-7);
+  padding: 6px var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-tint);
+  color: var(--color-primary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.badge::before {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.title {
+  margin-bottom: var(--space-6);
+  font-family: var(--font-heading);
+  font-size: clamp(var(--font-size-hero-min), 4.5vw, var(--font-size-hero));
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-display);
+}
+
+.title span,
+.title em {
+  display: block;
+}
+
+.title em {
+  color: var(--color-primary);
+}
+
+.description {
+  max-width: 480px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lead);
+  line-height: var(--line-height-relaxed);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-10);
+}
+
+.statistics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-10);
+  margin-top: var(--space-14);
+  padding-top: var(--space-10);
+  border-top: 1px solid var(--color-border);
+}
+
+.statistic {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.statisticLabel {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-label);
+}
+
+.statisticValue {
+  order: -1;
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-statistic);
+  line-height: 1;
+}
+
+.visual {
+  position: relative;
+  min-width: 0;
+}
+
+.photoPlaceholder {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-visual);
+  background: var(--gradient-photo-placeholder);
+  box-shadow: var(--shadow-photo);
+}
+
+.photoPlaceholder::after {
+  position: absolute;
+  right: calc(-1 * var(--space-10));
+  bottom: calc(-1 * var(--space-10));
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: var(--color-photo-decoration);
+  content: "";
+}
+
+.photoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-16);
+  height: var(--space-16);
+  border-radius: 50%;
+  background: var(--color-photo-icon-bg);
+  color: var(--color-photo-icon);
+}
+
+.photoIcon svg {
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.photoIcon circle {
+  fill: currentColor;
+  stroke: none;
+}
+
+.photoCaption {
+  color: var(--color-photo-caption);
+  font-size: var(--font-size-label);
+  letter-spacing: 0.04em;
+}
+
+.sterilityCard {
+  position: absolute;
+  bottom: var(--space-10);
+  left: calc(-1 * var(--space-6));
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating-card);
+}
+
+.sterilityIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  border-radius: 50%;
+  background: var(--color-surface-muted);
+  font-size: var(--font-size-lg);
+}
+
+.sterilityTitle {
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-bold);
+}
+
+.sterilityDescription {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.experienceCard {
+  position: absolute;
+  top: var(--space-10);
+  right: calc(-1 * var(--space-5));
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  box-shadow: var(--shadow-accent-card);
+}
+
+.experienceValue {
+  font-family: var(--font-display);
+  font-size: var(--font-size-card-title);
+  line-height: 1;
+}
+
+.experienceLabel {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-caption);
+}
