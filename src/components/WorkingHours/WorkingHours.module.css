@@ -1,0 +1,53 @@
+.card {
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-contact-schedule-border);
+  border-radius: var(--radius-md);
+  background: var(--color-primary-tint);
+}
+
+.title {
+  margin-bottom: var(--space-3);
+  color: var(--color-accent);
+  font-size: var(--font-size-eyebrow);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.schedule {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-5);
+  font-size: var(--font-size-label);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+}
+
+.row dt,
+.message {
+  color: var(--color-contact-text-muted);
+}
+
+.row dd {
+  color: var(--color-text-light);
+  font-weight: var(--font-weight-semibold);
+}
+
+.message {
+  font-size: var(--font-size-label);
+}
+
+.retryButton {
+  padding-inline: 0;
+  color: var(--color-accent);
+}
+
+.retryButton:not(:disabled):hover {
+  color: var(--color-text-light);
+}

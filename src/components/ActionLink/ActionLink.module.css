@@ -3,6 +3,7 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  gap: var(--space-3);
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   font-weight: var(--font-weight-semibold);

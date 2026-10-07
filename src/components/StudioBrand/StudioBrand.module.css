@@ -1,0 +1,65 @@
+.brand {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-3);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.logo {
+  display: block;
+  width: var(--brand-logo-size);
+  height: var(--brand-logo-size);
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.name {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-brand);
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.footer .logo {
+  width: var(--space-7);
+  height: var(--space-7);
+}
+
+.footer .texts {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.footer .name {
+  color: var(--color-text-light);
+  font-size: var(--font-size-button);
+}
+
+.footer .subtitle {
+  color: var(--color-contact-text-muted);
+  font-size: var(--font-size-caption);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.footer:focus-visible {
+  outline-color: var(--color-accent);
+}

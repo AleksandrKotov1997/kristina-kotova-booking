@@ -84,6 +84,13 @@
   --color-text-soft: #a67a63;
   --color-text-light: #ffffff;
 
+  --color-contact-bg: var(--color-text);
+  --color-contact-surface: rgba(253, 248, 244, 0.05);
+  --color-contact-border: rgba(253, 248, 244, 0.12);
+  --color-contact-text-muted: rgba(253, 248, 244, 0.7);
+  --color-contact-icon-bg: rgba(181, 113, 74, 0.15);
+  --color-contact-schedule-border: rgba(181, 113, 74, 0.2);
+
   --color-border: #ead9cf;
   --color-border-soft: #f1e4dc;
 
