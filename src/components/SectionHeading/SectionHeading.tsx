@@ -1,3 +1,4 @@
+import { SectionEyebrow } from "@/components/SectionEyebrow";
 import styles from "./SectionHeading.module.css";
 
 interface SectionHeadingProps {
@@ -14,7 +15,7 @@ export const SectionHeading = ({
   description,
 }: SectionHeadingProps) => (
   <div className={styles.heading}>
-    <p className={styles.eyebrow}>{eyebrow}</p>
+    <SectionEyebrow>{eyebrow}</SectionEyebrow>
     <h2 className={styles.title} id={id}>
       {title}
     </h2>

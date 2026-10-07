@@ -1,0 +1,86 @@
+.section {
+  padding-block: var(--space-25);
+  background: var(--color-section-muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-20);
+}
+
+.figure {
+  max-width: 420px;
+  margin-bottom: var(--space-10);
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-muted);
+  box-shadow: var(--shadow-photo);
+}
+
+.image {
+  object-fit: cover;
+}
+
+.caption {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-label);
+}
+
+.benefits {
+  padding-top: var(--space-2);
+}
+
+.title {
+  margin-bottom: var(--space-12);
+  font-family: var(--font-heading);
+  font-size: clamp(
+    var(--font-size-section-compact-min),
+    2.8vw,
+    var(--font-size-section-compact)
+  );
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-heading);
+}
+
+.title em {
+  color: var(--color-primary);
+}
+
+.benefitGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  list-style: none;
+}
+
+.qualifications {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  width: var(--space-5);
+  height: var(--space-5);
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

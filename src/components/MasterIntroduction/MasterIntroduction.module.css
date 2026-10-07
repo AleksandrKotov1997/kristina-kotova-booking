@@ -1,0 +1,22 @@
+.title {
+  margin-bottom: var(--space-5);
+  font-family: var(--font-heading);
+  font-size: clamp(
+    var(--font-size-section-compact-min),
+    2.8vw,
+    var(--font-size-section-compact)
+  );
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-heading);
+}
+
+.title em {
+  color: var(--color-primary);
+}
+
+.description {
+  display: grid;
+  gap: var(--space-4);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+}

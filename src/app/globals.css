@@ -17,6 +17,9 @@
   --font-size-service-title: 20px;
   --font-size-card-title: 22px;
   --font-size-statistic: 26px;
+  --font-size-benefit-icon: 24px;
+  --font-size-section-compact-min: 28px;
+  --font-size-section-compact: 42px;
   --font-size-section-min: 32px;
   --font-size-section: 48px;
   --font-size-hero-min: 42px;
@@ -36,6 +39,7 @@
 
   --color-page-bg: #fbf2ea;
   --color-section-bg: #fff7f0;
+  --color-section-muted: #f2e8df;
   --color-surface: #fdf8f4;
   --color-surface-muted: #f6e7dc;
 
