@@ -1,0 +1,30 @@
+.eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  color: var(--color-primary);
+  font-size: var(--font-size-eyebrow);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  flex-shrink: 0;
+  width: var(--space-10);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.start {
+  justify-content: flex-start;
+}
+
+.start::after {
+  display: none;
+}
