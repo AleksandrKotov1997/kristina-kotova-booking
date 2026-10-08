@@ -1,0 +1,1 @@
+export { PublicPageHeading } from "./PublicPageHeading";

@@ -1,15 +1,9 @@
-"use client";
+import { PublicPageHeading } from "@/components/PublicPageHeading";
 
-import { Typography } from "antd";
-import { PageContainer } from "@/components/PageContainer";
-
-export const ServicesView = () => {
-  return (
-    <PageContainer withVerticalPadding>
-      <Typography.Title>Services</Typography.Title>
-      <Typography.Paragraph>
-        Explore lash and brow services available for booking.
-      </Typography.Paragraph>
-    </PageContainer>
-  );
-};
+export const ServicesView = () => (
+  <PublicPageHeading
+    eyebrow="Прайс-лист"
+    title="Услуги"
+    description="Наращивание и ламинирование ресниц, архитектура и ламинирование бровей. Подберите процедуру для своего взгляда."
+  />
+);
