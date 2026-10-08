@@ -28,3 +28,7 @@
 .start::after {
   display: none;
 }
+
+.inverse {
+  color: var(--color-accent);
+}

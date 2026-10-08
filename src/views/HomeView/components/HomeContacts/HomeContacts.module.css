@@ -1,0 +1,76 @@
+.section {
+  padding-block: var(--space-25);
+  background: var(--color-contact-bg);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: var(--space-20);
+}
+
+.title {
+  margin-bottom: var(--space-5);
+  color: var(--color-text-light);
+  font-family: var(--font-heading);
+  font-size: clamp(
+    var(--font-size-section-min),
+    3.2vw,
+    var(--font-size-section)
+  );
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-heading);
+}
+
+.title em {
+  color: var(--color-accent);
+}
+
+.description {
+  max-width: 400px;
+  margin-bottom: var(--space-10);
+  color: var(--color-contact-text-muted);
+  line-height: var(--line-height-relaxed);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-10);
+  border: 1px solid var(--color-contact-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-contact-surface);
+}
+
+.contactList {
+  display: grid;
+  gap: var(--space-6);
+  list-style: none;
+}
+
+.addressList {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-contact-border);
+  list-style: none;
+}
+
+.directions {
+  margin-top: var(--space-2);
+  color: var(--color-contact-text-muted);
+  font-size: var(--font-size-label);
+  line-height: var(--line-height-body);
+}
+
+.whatsappLink {
+  display: inline-block;
+  margin-top: var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--color-accent);
+  font-size: var(--font-size-label);
+}
+
+.whatsappLink:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}

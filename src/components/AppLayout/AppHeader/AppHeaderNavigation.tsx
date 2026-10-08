@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { publicNavigationItems } from "./navigation";
+import { publicNavigationItems } from "../navigation";
 import styles from "./AppHeader.module.css";
 
 export const AppHeaderNavigation = () => {
