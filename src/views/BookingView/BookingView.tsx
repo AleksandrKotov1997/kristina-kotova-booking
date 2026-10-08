@@ -1,16 +1,9 @@
-"use client";
+import { PublicPageHeading } from "@/components/PublicPageHeading";
 
-import { Typography } from "antd";
-import { PageContainer } from "@/components/PageContainer";
-
-export const BookingView = () => {
-  return (
-    <PageContainer withVerticalPadding>
-      <Typography.Title>Booking</Typography.Title>
-      <Typography.Paragraph>
-        Choose a service, date, and available time slot to send a booking
-        request.
-      </Typography.Paragraph>
-    </PageContainer>
-  );
-};
+export const BookingView = () => (
+  <PublicPageHeading
+    eyebrow="Онлайн-запись"
+    title="Запись на процедуру"
+    description="Выберите услугу, дату и удобное время. После отправки заявки Кристина подтвердит запись."
+  />
+);

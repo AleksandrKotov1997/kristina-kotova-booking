@@ -1,0 +1,29 @@
+.heading {
+  padding-block: var(--space-20) var(--space-14);
+  background: var(--gradient-hero);
+  text-align: center;
+}
+
+.title {
+  margin-bottom: var(--space-5);
+  font-family: var(--font-heading);
+  font-size: clamp(var(--font-size-hero-min), 4vw, var(--font-size-hero));
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-heading);
+}
+
+.description {
+  max-width: 600px;
+  margin-inline: auto;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lead);
+  line-height: var(--line-height-relaxed);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}

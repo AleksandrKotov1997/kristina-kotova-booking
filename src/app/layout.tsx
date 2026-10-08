@@ -18,7 +18,10 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Kristina Kotova Lash & Brow Studio",
+  title: {
+    default: "Kristina Kotova Lash & Brow Studio",
+    template: "%s | Kristina Kotova",
+  },
   description:
     "Сайт мастера по ресницам и бровям Кристины Котовой: услуги, работы и онлайн-запись.",
 };
