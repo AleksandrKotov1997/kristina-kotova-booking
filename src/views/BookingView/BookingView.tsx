@@ -1,6 +1,6 @@
 import { PageContainer } from "@/components/PageContainer";
 import { PublicPageHeading } from "@/components/PublicPageHeading";
-import { BookingServiceSelection } from "@/features/booking/components/BookingServiceSelection";
+import { BookingFlow } from "@/features/booking/components/BookingFlow/BookingFlow";
 import type { ServiceSelectionRequest } from "@/features/services/model/serviceSelection";
 import styles from "./BookingView.module.css";
 
@@ -15,9 +15,16 @@ export const BookingView = ({ selectionRequest }: BookingViewProps) => (
       title="Запись на процедуру"
       description="Выберите услугу, дату и удобное время. После отправки заявки Кристина подтвердит запись."
     />
-    <section className={styles.selection} aria-label="Выбор услуги для записи">
+    <section className={styles.selection} aria-label="Онлайн-запись">
       <PageContainer>
-        <BookingServiceSelection selectionRequest={selectionRequest} />
+        <BookingFlow
+          key={
+            selectionRequest.status === "requested"
+              ? selectionRequest.serviceId
+              : selectionRequest.status
+          }
+          selectionRequest={selectionRequest}
+        />
       </PageContainer>
     </section>
   </>
