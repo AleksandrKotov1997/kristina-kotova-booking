@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { parseServiceSelectionRequest } from "@/features/services/model/serviceSelection";
 import { BookingView } from "@/views/BookingView";
 
 export const metadata: Metadata = {
@@ -7,6 +8,13 @@ export const metadata: Metadata = {
     "Онлайн-запись к Кристине Котовой на услуги для ресниц и бровей.",
 };
 
-export default function BookingPage() {
-  return <BookingView />;
+interface BookingPageProps {
+  searchParams: Promise<{ serviceId?: string | string[] }>;
+}
+
+export default async function BookingPage({ searchParams }: BookingPageProps) {
+  const { serviceId } = await searchParams;
+  const selectionRequest = parseServiceSelectionRequest(serviceId);
+
+  return <BookingView selectionRequest={selectionRequest} />;
 }

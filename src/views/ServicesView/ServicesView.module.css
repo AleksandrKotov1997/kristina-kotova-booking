@@ -1,0 +1,4 @@
+.catalog {
+  padding-block: var(--space-14) var(--space-25);
+  background: var(--color-page-bg);
+}
