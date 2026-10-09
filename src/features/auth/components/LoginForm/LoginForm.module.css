@@ -1,0 +1,47 @@
+.form {
+  display: grid;
+  gap: var(--space-6);
+  text-align: left;
+}
+.field {
+  display: grid;
+  gap: var(--space-2);
+}
+.field label {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+.field :global(.ant-input),
+.field :global(.ant-input-affix-wrapper) {
+  min-height: var(--control-height-lg);
+  border-radius: var(--radius-sm);
+  background: var(--color-section-muted);
+  border-color: var(--color-border);
+  font-size: var(--font-size-base);
+}
+.field :global(.ant-input-affix-wrapper .ant-input) {
+  min-height: auto;
+  background: transparent;
+}
+.field :global(.ant-input:focus),
+.field :global(.ant-input-affix-wrapper-focused) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-tint);
+}
+.error {
+  margin: 0;
+  color: #a0442f;
+  font-size: var(--font-size-sm);
+}
+.form .submit:global(.ant-btn-primary) {
+  height: var(--control-height-lg);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-action);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+}
+.form .submit:global(.ant-btn-primary):hover:enabled {
+  background: var(--color-primary-hover);
+}

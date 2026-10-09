@@ -8,7 +8,7 @@
 
 Next.js App Router, React, TypeScript, Ant Design, CSS Modules,
 TanStack Query, Axios, React Hook Form и Zod. Для критичной бизнес-логики
-предусмотрены Vitest и React Testing Library. База каталога — Supabase; авторизация мастера добавляется на своём этапе.
+предусмотрены Vitest и React Testing Library. База данных и авторизация мастера — Supabase.
 
 ## Локальный запуск
 
@@ -284,7 +284,7 @@ endTime и isWorkingDay. Время в ответе — HH:mm; поля базы
 - начало должно быть раньше окончания, интервалы через полночь не допускаются.
 
 Для anon/authenticated разрешено только чтение с RLS. Редактирование посетителем
-запрещено; права мастера добавляются на этапе Auth/Admin. Схема и ограничения
+запрещено; доступ мастера проверяется через Supabase Auth и private.studio_owner. Схема и ограничения
 оформлены миграциями. Подтверждённое расписание: ежедневно 10:00–20:00.
 В booking_settings задан часовой пояс Asia/Almaty для Астаны.
 
@@ -436,3 +436,67 @@ Compose читает .env.local только при создании конте�
 
 Подробности формата сборки: [Next.js standalone](https://nextjs.org/docs/app/api-reference/config/next-config-js/output)
 и [многоэтапная сборка Docker](https://docs.docker.com/build/building/multi-stage/).
+
+## Вход мастера
+
+/admin/login — форма email/пароля по макету; /admin — закрытая страница
+учётной записи с выходом. Публичный каталог и онлайн-запись не требуют входа.
+Список заявок, статистика и действия со статусами относятся к следующему
+этапу Admin bookings.
+
+Supabase Auth работает через @supabase/ssr только на сервере. Используются
+существующие SUPABASE_URL и SUPABASE_PUBLISHABLE_KEY; дополнительные секреты
+и публичные переменные окружения не нужны. Cookie сессии имеет HttpOnly,
+SameSite=Lax и Secure в production. На production-домене нужен HTTPS.
+Пароль передаётся только сервису Auth при входе, не сохраняется в базе приложения
+или локальном хранилище браузера. Автоматических повторов входа нет.
+
+Proxy обновляет сессию и передаёт новые cookies в серверные компоненты и
+ответ браузеру. Закрытый layout и API независимо проверяют пользователя через
+getUser() и роль через is_studio_owner(). Cookie с ID, клиентские поля и
+user_metadata не назначают права. Auth-ответы не кэшируются.
+
+POST /api/auth/login принимает email/password, проверяет Origin и Host,
+JSON, размер и схему; возвращает только профиль мастера, без токенов в JSON.
+POST /api/auth/logout завершает текущую сессию, очищает cookies и перенаправляет
+форму на вход. Другие устройства остаются в своих сессиях.
+GET /api/me возвращает id/email назначенного мастера либо 401; изменение
+пользователя через старый демо-PATCH удалено. Сбой Auth или базы не открывает
+кабинет; интерфейс предлагает повторить запрос.
+
+Миграция создаёт private.studio_owner и ограничивает кабинет одним Auth UUID.
+Самостоятельная регистрация другого пользователя в Supabase не даёт права
+мастера. Таблица ролей недоступна anon/authenticated напрямую; функция проверки
+роли доступна только authenticated. Назначение выполняет владелец проекта.
+
+Чтобы перенести кабинет на Кристину:
+
+1. Создайте её пользователя в Supabase → Authentication → Users → Add user →
+   Create new user. Она самостоятельно задаёт пароль. Подтвердите email.
+2. Скопируйте UUID нового пользователя и выполните в SQL Editor от владельца
+   проекта, заменив пример UUID фактическим значением:
+
+```sql
+begin;
+update private.studio_owner
+set user_id = 'UUID_НОВОГО_ПОЛЬЗОВАТЕЛЯ'::uuid
+where singleton;
+commit;
+```
+
+3. Войдите новым пользователем. У прежнего пользователя доступ к кабинету
+   прекращается при следующей проверке роли; менять код или env не требуется.
+
+UUID/email текущего владельца и пароль не включены в миграции, seed или Git.
+Удаление пользователя в Supabase автоматически удаляет его назначение мастером.
+
+Проверки: pnpm test, pnpm lint, pnpm typecheck и pnpm build.
+SQL-проверка прав изолирована транзакцией и откатывает тестовые данные:
+
+```bash
+pnpm supabase db query --linked --file supabase/tests/auth.sql
+```
+
+Документация: [Supabase Auth для Next.js](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework&framework=nextjs),
+[серверные сессии и кэширование](https://supabase.com/docs/guides/auth/server-side/advanced-guide),
+[защита данных Next.js](https://nextjs.org/docs/app/guides/data-security).
