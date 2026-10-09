@@ -1,0 +1,107 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 1fr);
+  gap: var(--space-8);
+}
+.calendar {
+  min-width: 0;
+}
+.monthNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-2) var(--space-5);
+}
+.month {
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-semibold);
+  text-transform: capitalize;
+}
+.calendar :global(.ant-picker-calendar) {
+  background: var(--color-surface);
+}
+.note {
+  font-size: var(--font-size-label);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+  margin-top: var(--space-4);
+}
+.times {
+  min-width: 0;
+}
+.placeholder {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-16) var(--space-4);
+}
+.date {
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-5);
+}
+.slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.slot {
+  font: inherit;
+  font-size: var(--font-size-sm);
+  min-height: var(--control-height);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.slot:not(.selected):hover:enabled {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+}
+.slot.selected {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  border-color: var(--color-primary);
+}
+.slot:disabled {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--color-section-muted);
+}
+.slot:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-primary);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.day {
+  width: var(--space-8);
+  height: var(--space-8);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.day:not(.selectedDay):hover:enabled {
+  background: var(--color-primary-tint);
+}
+.day.selectedDay {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+.day:disabled {
+  color: var(--color-text-muted);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.day:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-primary);
+  outline-offset: 1px;
+}
+.calendar :global(.ant-picker-panel) {
+  background: var(--color-surface);
+}

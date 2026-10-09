@@ -1,3 +1,4 @@
+import { studioCity } from "@/features/studio/model/constants";
 import { ActionLink } from "@/components/ActionLink";
 import { ContactItem } from "@/components/ContactItem";
 import { PageContainer } from "@/components/PageContainer";
@@ -101,7 +102,7 @@ export const HomeContacts = () => (
                   studioContacts.location.city +
                   ", " +
                   studioContacts.location.address
-                : "Адрес уточняется"
+                : "г. " + studioCity + ", адрес уточняется"
             }
           >
             {studioContacts.location && (

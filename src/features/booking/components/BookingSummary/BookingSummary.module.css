@@ -1,0 +1,22 @@
+.summary {
+  display: grid;
+  gap: var(--space-3);
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-primary-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+.summary div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+.summary dt {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+.summary dd {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-align: right;
+}

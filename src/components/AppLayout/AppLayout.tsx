@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { studioContacts } from "@/features/studio/model/contacts";
+import { studioCity } from "@/features/studio/model/constants";
 import { AppFooter } from "./AppFooter";
 import { AppHeader } from "./AppHeader";
 import styles from "./AppLayout.module.css";
@@ -13,7 +13,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     <div className={styles.layout}>
       <AppHeader />
       <main className={styles.content}>{children}</main>
-      <AppFooter city={studioContacts.location?.city} />
+      <AppFooter city={studioCity} />
     </div>
   );
 };
