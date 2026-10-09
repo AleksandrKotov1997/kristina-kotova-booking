@@ -12,7 +12,7 @@ TanStack Query, Axios, React Hook Form и Zod. Для критичной биз�
 
 ## Локальный запуск
 
-Нужны Node.js 20.9+ и pnpm.
+Нужны Node.js 24 LTS и pnpm 10.33.0 (версия закреплена в packageManager).
 
 ```bash
 pnpm install --frozen-lockfile
@@ -71,7 +71,7 @@ Photo placeholder предусмотрен ТЗ на этапе разработ
 Страницы `/works` и `/about` открываются напрямую и через Header/footer.
 `/services` содержит полный активный каталог с категориями. `/booking`
 принимает выбор услуги из каталога и проверяет её актуальность через API.
-Календарь, слоты и отправка заявки — следующий этап. Мобильная адаптация
+Календарь, слоты и отправка заявки реализованы полным сценарием Booking. Мобильная адаптация
 предусмотрена после завершения desktop-версии.
 
 Текущий статус и оставшиеся этапы: [docs/implementation-status.md](docs/implementation-status.md).
@@ -377,6 +377,62 @@ test:booking-api требует запущенный сайт (по умолча
 
 ## Docker
 
-По ТЗ Docker допускается для удобного локального запуска. Контейнеризация
-запланирована отдельным шагом после полного Booking, с проверкой запуска.
-Текущая production-схема — Vercel для Next.js и облачный Supabase для данных.
+Для запуска готовой версии сайта установите и запустите Docker Desktop
+(или Docker Engine с Compose). Локальные Node.js и pnpm для контейнера не нужны.
+Используется существующий облачный Supabase; миграции применяются отдельно
+через CLI, контейнер не меняет схему базы при старте.
+
+В корне должен быть заполненный `.env.local` с SUPABASE_URL и
+SUPABASE_PUBLISHABLE_KEY из примера. Если этот файл уже настроен для pnpm dev,
+он подходит и для Docker — менять его не нужно.
+
+```bash
+docker compose up --build --wait --wait-timeout 120
+```
+
+Сайт: http://localhost:3001. Порт привязан к 127.0.0.1 и доступен только
+на этом компьютере. Запуск pnpm dev на 3000 может работать параллельно.
+Если 3001 занят, выберите другой порт:
+
+```bash
+DOCKER_PORT=3002 docker compose up --build --wait --wait-timeout 120
+```
+
+```bash
+docker compose ps
+docker compose logs --tail 50 web
+docker compose down
+```
+
+Dockerfile собирает Next.js на Node.js 24.21.0 LTS, устанавливает зависимости
+по frozen lockfile и версии pnpm 10.33.0 из packageManager. Многоэтапная сборка
+оставляет в рабочем образе standalone-сервер, public и .next/static.
+Приложение работает от пользователя node; Compose init передаёт сигналы,
+а остановка даёт серверу 20 секунд для завершения запросов.
+
+NEXT_STANDALONE=true включается только на этапе сборки Docker. Обычные
+pnpm dev, pnpm build и pnpm start сохраняют стандартный режим Next.js;
+Vercel остаётся целевым production-размещением по ТЗ.
+
+Healthcheck проверяет HTTP-ответ главной страницы. Статус healthy означает,
+что сервер сайта отвечает; доступность Supabase проверяется отдельно через
+каталог и календарь. При ошибке подключения интерфейс показывает повтор запроса.
+Первой сборке нужен интернет для образа Node.js, зависимостей и Google Fonts.
+После изменений исходников повторите команду запуска с --build.
+
+### Окружение и ключи
+
+.dockerignore разрешает передавать в сборку только исходники, public и файлы
+конфигурации; все .env\* исключены, включая вложенные файлы. Dockerfile копирует
+файлы явно. Ключи не передаются через ARG, ENV сборки или публичные переменные окружения:
+Compose читает .env.local только при создании контейнера. Файл не монтируется
+и не копируется в образ. .gitignore исключает окружение из Git; публикуется
+только .env.example с пустыми примерами.
+
+Не публикуйте вывод docker compose config без --quiet и полный docker inspect:
+они могут показывать значения окружения запущенного контейнера.
+Для изменения ключа обновите локальный файл и пересоздайте контейнер
+командой docker compose up --force-recreate --wait.
+
+Подробности формата сборки: [Next.js standalone](https://nextjs.org/docs/app/api-reference/config/next-config-js/output)
+и [многоэтапная сборка Docker](https://docs.docker.com/build/building/multi-stage/).
