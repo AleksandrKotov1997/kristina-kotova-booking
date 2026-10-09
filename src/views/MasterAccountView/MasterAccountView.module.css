@@ -1,0 +1,33 @@
+.account {
+  max-width: 640px;
+  margin-inline: auto;
+}
+.title {
+  margin: 0 0 var(--space-8);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-section-min);
+  font-weight: var(--font-weight-regular);
+}
+.card {
+  padding: var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-service-card);
+  background: var(--color-surface);
+}
+.subtitle {
+  margin: 0 0 var(--space-6);
+  font-size: var(--font-size-service-title);
+  font-weight: var(--font-weight-semibold);
+}
+.details {
+  margin: 0;
+}
+.details dt {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.details dd {
+  margin: var(--space-2) 0 0;
+  overflow-wrap: anywhere;
+  font-size: var(--font-size-lg);
+}

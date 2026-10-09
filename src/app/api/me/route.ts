@@ -1,40 +1,26 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 import {
-  findDemoUserById,
-  getDemoUserById,
-} from "@/features/currentUser/model/constants";
-import { updateCurrentUserSchema } from "@/features/currentUser/model/schemas";
+  createAuthContext,
+  type AuthContext,
+} from "@/server/auth/createAuthContext";
+import { getVerifiedMaster } from "@/server/auth/masterAccess";
+import { authErrorResponse } from "@/server/auth/authErrors";
+import { HttpRequestError } from "@/shared/http/readJsonBody";
 
-export const GET = async () => {
-  const cookieStore = await cookies();
-  const currentUserId = cookieStore.get("currentUserId")?.value;
-  const currentUser = findDemoUserById(currentUserId);
-  return NextResponse.json(currentUser);
-};
-
-export const PATCH = async (request: Request) => {
-  const rawBody = await request.json().catch(() => null);
-  const parsedBody = updateCurrentUserSchema.safeParse(rawBody);
-
-  if (!parsedBody.success) {
-    return NextResponse.json(
-      { message: "Invalid current user payload" },
-      { status: 400 },
-    );
+export const GET = async (request: NextRequest) => {
+  let context: AuthContext | undefined;
+  try {
+    context = createAuthContext(request.cookies.getAll());
+    const master = await getVerifiedMaster(context);
+    if (!master)
+      throw new HttpRequestError(
+        401,
+        "AUTH_REQUIRED",
+        "Войдите в кабинет мастера.",
+      );
+    return context.applyResponseCookies(NextResponse.json({ data: master }));
+  } catch (error) {
+    const response = authErrorResponse(error);
+    return context ? context.applyResponseCookies(response) : response;
   }
-
-  const currentUser = getDemoUserById(parsedBody.data.userId);
-
-  if (!currentUser) {
-    return NextResponse.json(
-      { message: "Current user was not found" },
-      { status: 400 },
-    );
-  }
-
-  const cookieStore = await cookies();
-  cookieStore.set("currentUserId", currentUser.id, { path: "/" });
-
-  return NextResponse.json(currentUser);
 };
