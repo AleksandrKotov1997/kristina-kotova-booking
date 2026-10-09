@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { bookingStatusSchema } from "./bookingStatus";
 import { workingHoursSchema } from "@/features/workingHours/model/schemas";
 
 export const bookingDateSchema = z.iso.date();
@@ -59,7 +60,7 @@ export const bookingAvailabilitySchema = z.object({
 });
 export const bookingReceiptSchema = z.object({
   id: z.uuid(),
-  status: z.enum(["pending", "confirmed", "cancelled", "completed"]),
+  status: bookingStatusSchema,
   date: bookingDateSchema,
   startTime: bookingTimeSchema,
   endTime: bookingTimeSchema,

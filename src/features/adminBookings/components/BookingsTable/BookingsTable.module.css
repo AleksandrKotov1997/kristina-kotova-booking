@@ -1,0 +1,47 @@
+.table :global(.ant-table-wrapper .ant-table) {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-service-card);
+  overflow: hidden;
+}
+.table :global(.ant-table-wrapper .ant-table-thead > tr > th) {
+  background: var(--color-section-muted);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-navigation);
+  border-bottom-color: var(--color-border);
+}
+.table :global(.ant-table-wrapper .ant-table-tbody > tr > td) {
+  border-bottom-color: var(--color-border);
+  padding: var(--space-5) var(--space-4);
+}
+.table :global(.ant-table-wrapper .ant-table-tbody > tr:nth-child(even) > td) {
+  background: var(--color-section-bg);
+}
+.table :global(.ant-table-wrapper .ant-table-tbody > tr:hover > td) {
+  background: var(--color-surface-muted);
+}
+.table :global(.ant-pagination .ant-pagination-item-active) {
+  border-color: var(--color-primary);
+}
+.table :global(.ant-pagination .ant-pagination-item-active a) {
+  color: var(--color-primary);
+}
+.cell {
+  display: grid;
+  gap: var(--space-1);
+}
+.cell a,
+.cell small {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-label);
+}
+.cell a {
+  text-decoration: underline;
+}
+.time {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

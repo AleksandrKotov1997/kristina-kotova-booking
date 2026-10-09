@@ -1,0 +1,46 @@
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-service-card);
+  overflow: hidden;
+}
+.panel h2 {
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+}
+.list {
+  list-style: none;
+}
+.booking {
+  padding: var(--space-5) var(--space-6);
+  display: grid;
+  gap: var(--space-2);
+}
+.booking + .booking {
+  border-top: 1px solid var(--color-border);
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.booking p,
+.phone {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.phone {
+  justify-self: start;
+  text-decoration: underline;
+}
+.footer {
+  padding: var(--space-5) var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+.empty {
+  padding: var(--space-8) var(--space-6);
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,48 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-service-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-service-card);
+  transition: border-color var(--transition-base);
+}
+.card:hover {
+  border-color: var(--color-primary);
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border-radius: var(--radius-sm);
+  background: var(--color-section-muted);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+.card strong {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-section-compact);
+  line-height: var(--line-height-display);
+  font-weight: var(--font-weight-regular);
+}
+.card > span:last-child {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.pending strong {
+  color: var(--color-primary);
+}
+.confirmed strong,
+.confirmed .icon {
+  color: var(--color-status-confirmed);
+}
