@@ -23,6 +23,7 @@ export const LoginForm = ({ initialError }: { initialError?: string }) => {
   const error = login.isError ? getAuthErrorMessage(login.error) : initialError;
   return (
     <form
+      method="post"
       className={styles.form}
       noValidate
       onSubmit={handleSubmit((credentials) =>

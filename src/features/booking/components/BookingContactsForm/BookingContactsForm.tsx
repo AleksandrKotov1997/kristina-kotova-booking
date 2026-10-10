@@ -33,7 +33,12 @@ export const BookingContactsForm = ({
     mode: "onBlur",
   });
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form
+      method="post"
+      className={styles.form}
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+    >
       <div className={styles.field}>
         <label htmlFor="booking-client-name">Имя</label>
         <input
