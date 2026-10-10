@@ -600,7 +600,9 @@ public/images/lash-brow-closeup.jpg ([mehrab zahedbeigi, Pexels](https://www.pex
 1. Подключить только репозиторий kristina-kotova-booking к приложению Vercel.
 2. Импортировать его в нужный аккаунт/команду. Framework — Next.js,
    корень проекта — ./, Node.js — 24.x. pnpm определяется по packageManager
-   и lockfile; стандартные команды установки/сборки подходят.
+   и lockfile; стандартные команды установки/сборки подходят. vercel.json
+   фиксирует единственный регион функций fra1 рядом с базой Supabase
+   во Франкфурте; это соответствует ограничению Hobby на один регион.
 3. В настройках проекта добавить `SUPABASE_URL` и `SUPABASE_PUBLISHABLE_KEY`
    из локального окружения для Production. Не добавлять префикс `NEXT_PUBLIC_`,
    secret/service_role key, пароль базы или пароль мастера.
