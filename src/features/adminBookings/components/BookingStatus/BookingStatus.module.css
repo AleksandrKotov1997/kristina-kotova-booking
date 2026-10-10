@@ -1,0 +1,25 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+}
+.pending {
+  background: var(--color-status-pending-bg);
+  color: var(--color-status-pending);
+}
+.confirmed {
+  background: var(--color-status-confirmed-bg);
+  color: var(--color-status-confirmed);
+}
+.completed {
+  background: var(--color-section-muted);
+  color: var(--color-text-muted);
+}
+.cancelled {
+  background: var(--color-status-cancelled-bg);
+  color: var(--color-status-cancelled);
+}

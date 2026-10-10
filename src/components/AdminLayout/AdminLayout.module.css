@@ -13,6 +13,25 @@
   justify-content: space-between;
   gap: var(--space-6);
 }
+.controls,
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.link {
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-semibold);
+  transition: background var(--transition-base);
+}
+.link:hover,
+.active {
+  color: var(--color-primary);
+  background: var(--color-surface-muted);
+}
 .main {
-  padding-block: var(--space-16);
+  padding-block: var(--space-12);
 }

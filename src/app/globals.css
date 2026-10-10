@@ -91,6 +91,13 @@
   --color-contact-icon-bg: rgba(181, 113, 74, 0.15);
   --color-contact-schedule-border: rgba(181, 113, 74, 0.2);
 
+  --color-status-pending: #94713c;
+  --color-status-pending-bg: #f3ede0;
+  --color-status-confirmed: #547657;
+  --color-status-confirmed-bg: #e8eee5;
+  --color-status-cancelled: #a44e45;
+  --color-status-cancelled-bg: #f4e7e2;
+
   --color-border: #ead9cf;
   --color-border-soft: #f1e4dc;
 

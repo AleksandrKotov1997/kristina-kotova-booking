@@ -1,0 +1,13 @@
+.state {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+  padding: var(--space-8);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-service-card);
+}
+.state a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
