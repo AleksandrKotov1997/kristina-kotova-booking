@@ -5,7 +5,7 @@ import { BookingView } from "@/views/BookingView";
 export const metadata: Metadata = {
   title: "Запись на процедуру",
   description:
-    "Онлайн-запись к Кристине Котовой на услуги для ресниц и бровей.",
+    "Онлайн-запись на ресницы и брови к Кристине Котовой в Астане. Выберите услугу, дату и свободное время.",
 };
 
 interface BookingPageProps {

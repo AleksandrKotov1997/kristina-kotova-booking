@@ -1,18 +1,20 @@
+import Image from "next/image";
 import styles from "./HomeHero.module.css";
 
 export const HomeHeroVisual = () => {
   return (
     <div className={styles.visual}>
-      <figure className={styles.photoPlaceholder}>
-        <span className={styles.photoIcon} aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <path d="m21 15-5-5L5 21" />
-          </svg>
-        </span>
+      <figure className={styles.photo}>
+        <Image
+          src="/images/lash-brow-closeup.jpg"
+          alt="Выразительный взгляд: длинные ресницы и аккуратная форма бровей"
+          className={styles.photoImage}
+          fill
+          preload
+          sizes="(max-width: 767px) 420px, (max-width: 1023px) 45vw, 540px"
+        />
         <figcaption className={styles.photoCaption}>
-          Фото работ мастера
+          Иллюстрация образа
         </figcaption>
       </figure>
 

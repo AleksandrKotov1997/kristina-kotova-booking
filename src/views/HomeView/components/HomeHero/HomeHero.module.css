@@ -133,57 +133,30 @@
   min-width: 0;
 }
 
-.photoPlaceholder {
+.photo {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-visual);
-  background: var(--gradient-photo-placeholder);
+  background: var(--color-surface-muted);
   box-shadow: var(--shadow-photo);
 }
 
-.photoPlaceholder::after {
-  position: absolute;
-  right: calc(-1 * var(--space-10));
-  bottom: calc(-1 * var(--space-10));
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: var(--color-photo-decoration);
-  content: "";
-}
-
-.photoIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--space-16);
-  height: var(--space-16);
-  border-radius: 50%;
-  background: var(--color-photo-icon-bg);
-  color: var(--color-photo-icon);
-}
-
-.photoIcon svg {
-  stroke: currentColor;
-  stroke-width: 1.5;
-}
-
-.photoIcon circle {
-  fill: currentColor;
-  stroke: none;
+.photoImage {
+  object-fit: cover;
+  object-position: 55% center;
 }
 
 .photoCaption {
-  color: var(--color-photo-caption);
-  font-size: var(--font-size-label);
-  letter-spacing: 0.04em;
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
 }
 
 .sterilityCard {

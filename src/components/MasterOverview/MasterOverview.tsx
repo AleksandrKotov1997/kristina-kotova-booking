@@ -18,7 +18,7 @@ export const MasterOverview = ({
         <div className={styles.photo}>
           <Image
             src="/images/master-treatment.jpg"
-            alt="Мастер в перчатках аккуратно наращивает ресницы клиентке"
+            alt="Крупный план наращивания ресниц: мастер работает пинцетами в перчатках"
             className={styles.image}
             fill
             loading={imageLoading}

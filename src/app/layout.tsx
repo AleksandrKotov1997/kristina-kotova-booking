@@ -23,7 +23,15 @@ export const metadata: Metadata = {
     template: "%s | Kristina Kotova",
   },
   description:
-    "Сайт мастера по ресницам и бровям Кристины Котовой: услуги, работы и онлайн-запись.",
+    "Наращивание и ламинирование ресниц, оформление бровей у Кристины Котовой в Астане. Услуги, цены в тенге и онлайн-запись.",
+  openGraph: {
+    type: "website",
+    locale: "ru_KZ",
+    siteName: "Kristina Kotova Lash & Brow Studio",
+    title: "Ресницы и брови в Астане | Kristina Kotova",
+    description:
+      "Наращивание и ламинирование ресниц, оформление бровей в Астане. Выберите процедуру и удобное время онлайн.",
+  },
 };
 
 export default function RootLayout({

@@ -62,9 +62,9 @@ Hero главной страницы для desktop: заголовок с ак�
 DM Serif Display не содержит кириллицу.
 
 Контент Hero статический и взят из ТЗ и макета; API и база здесь не нужны.
-Photo placeholder предусмотрен ТЗ на этапе разработки и должен быть
-заменён реальным фото до production. Статистика и карточка «10 лет
-в красоте» перенесены из макета, без вычислений на клиенте.
+Hero использует локальное фото с акцентом на ресницы и брови; подпись
+обозначает его как иллюстрацию. Статистика и карточка «10 лет в красоте»
+оставлены по подтверждению владельца проекта.
 
 Все desktop-блоки главной собраны: Header, Hero, услуги, работы, о мастере,
 контакты и footer. Ссылка `/#contacts` ведёт к блоку контактов.
@@ -96,7 +96,7 @@ service_role для этого не нужны. Без настроенного 
 `GET /api/services` возвращает `{ data: Service[] }`.
 Параметр `category=lashes` или `category=brows` фильтрует категорию;
 без параметра возвращаются обе. Неизвестные параметры, повторная category
-и неизвестная категория возвращают 400. Цена передаётся числом в рублях,
+и неизвестная категория возвращают 400. Цена передаётся числом в тенге,
 длительность — в минутах. Поля API используют camelCase, таблица — snake_case.
 API и политика RLS разрешают чтение только активных услуг. Посетители
 не могут добавлять, изменять или удалять услуги.
@@ -174,21 +174,21 @@ sort_order и временные метки. RLS разрешает anon/authent
 Ссылки на изображения находятся в seed, а не в компонентах. Для замены
 достаточно изменить image_url соответствующей записи на HTTPS-ссылку
 реальной фотографии, например из Supabase Storage. Повторный seed
-сохраняет существующие записи. Перед production нужно заменить снимки
-и обновить вводный текст блока. Мобильная адаптация выполняется на своём этапе ТЗ.
+сохраняет существующие записи. Стоковые иллюстрации для текущей версии подтверждены владельцем. При добавлении
+собственных работ нужно обновить снимки и подпись блока. Галерея адаптирована для телефонов.
 
 Источники: [лицензия Pexels](https://www.pexels.com/legal-pages/license).
 
-| Карточка             | Фотограф и источник                                                                                       |
-| -------------------- | --------------------------------------------------------------------------------------------------------- |
-| Классический объём   | [Joice Rivas](https://www.pexels.com/photo/woman-doing-lashes-at-beautician-16554435/)                    |
-| Голливудский объём   | [El gringo photo](https://www.pexels.com/photo/a-woman-with-beautiful-eyelashes-10698006/)                |
-| 2D/3D эффект         | [Layla Luany](https://www.pexels.com/photo/professional-eyelash-extension-application-close-up-33723106/) |
-| Ламинирование ресниц | [Angela Roma](https://www.pexels.com/photo/eye-with-eyelashes-of-faceless-woman-7479982/)                 |
-| Архитектура бровей   | [Gabriel Puyén](https://www.pexels.com/photo/brunette-woman-at-eyebrow-styling-6135650/)                  |
-| Ламинирование бровей | [Ron Lach](https://www.pexels.com/photo/woman-applying-eyebrow-makeup-8129900/)                           |
-| Натуральный эффект   | [Kássia Melo](https://www.pexels.com/photo/close-up-of-woman-s-eyelashes-15353405/)                       |
-| Окрашивание хной     | [Bob Media](https://www.pexels.com/photo/professional-eyebrow-styling-5475901/)                           |
+| Карточка                       | Фотограф и источник                                                                                                  |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| Наращивание ресниц             | [Nataliya Vaitkevich](https://www.pexels.com/photo/close-up-shot-of-a-person-getting-an-eyelash-extensions-5128234/) |
+| Выразительный взгляд           | [mehrab zahedbeigi](https://www.pexels.com/photo/close-up-of-woman-face-and-eye-20765765/)                           |
+| Работа с каждой ресницей       | [Layla Luany](https://www.pexels.com/photo/professional-eyelash-extension-application-close-up-33723106/)            |
+| Натуральный изгиб              | [Angela Roma](https://www.pexels.com/photo/eye-with-eyelashes-of-faceless-woman-7479982/)                            |
+| Оформление бровей              | [Gabriel Puyén](https://www.pexels.com/photo/brunette-woman-at-eyebrow-styling-6135650/)                             |
+| Укладка бровей                 | [Nataliya Vaitkevich](https://www.pexels.com/photo/a-person-plucking-the-woman-s-eyebrow-8558248/)                   |
+| Ресницы и брови крупным планом | [Andreea Aron](https://www.pexels.com/photo/close-up-of-a-human-eye-with-eyelashes-32039798/)                        |
+| Коррекция формы бровей         | [Nataliya Vaitkevich](https://www.pexels.com/photo/a-hand-plucking-the-eyebrow-of-a-client-5128275/)                 |
 
 Проверка ограничений галереи, updated_at и RLS выполняется с откатом:
 
@@ -209,7 +209,7 @@ MasterIntroduction и BenefitCard находятся в общих компон�
 Цвет фона, размеры заголовков и иконок добавлены в дизайн-токены.
 
 Фотография процедуры — иллюстрация, её подпись прямо сообщает об этом.
-Источник: [Gustavo Fring, Pexels](https://www.pexels.com/photo/a-woman-putting-eyelash-extension-to-a-woman-lying-on-bed-7446924/).
+Источник: [Nataliya Vaitkevich, Pexels](https://www.pexels.com/photo/close-up-shot-of-a-person-getting-an-eyelash-extensions-5128234/).
 Использование — по [лицензии Pexels](https://www.pexels.com/legal-pages/license/).
 Файл public/images/master-treatment.jpg хранится в проекте и оптимизируется next/image.
 Перед публикацией замените его реальным портретом Кристины, обновите src,
@@ -565,3 +565,57 @@ pnpm supabase db query --linked --file supabase/tests/admin-bookings.sql
 В браузере проверены реальные действия через Supabase, конфликт двух
 вкладок, фильтры и production-контейнер. Изолированные тестовые заявки
 удалены после проверки. Публичная запись также проверена повторно в Docker.
+
+## Контент для Астаны и публикация
+
+Публичные контакты подтверждены владельцем и находятся в
+src/features/studio/model/contacts.ts: телефон/WhatsApp, Instagram, Telegram
+и адрес кабинета. Сайт на русском, город — Астана; даты и цены используют
+локаль ru-KZ, расписание базы — Asia/Almaty, ежедневно 10:00–20:00.
+
+Все суммы API и снимки стоимости bookings.service_price — в тенге.
+Прайс согласован как пересчёт исходного каталога по официальному курсу
+НБРК на 10.10.2026: множитель 5.35. Он применён один раз миграцией
+20261010100000_localize_catalog_for_astana; автоматического обновления курса нет.
+[Источник курса](https://nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut).
+Seed сразу содержит итоговые цены KZT и не перезаписывает существующий каталог.
+При откате на старую версию, использующую другую валюту, нужно согласованно
+откатить единицу цен в базе и код форматирования; откат интерфейса сам по себе
+не возвращает данные Supabase.
+
+Стоковые фотографии оставлены по просьбе владельца до появления собственных
+работ. Они подписаны как иллюстрации. Hero использует локальный
+public/images/lash-brow-closeup.jpg ([mehrab zahedbeigi, Pexels](https://www.pexels.com/photo/close-up-of-woman-face-and-eye-20765765/));
+фото процедуры — public/images/master-treatment.jpg. Галерея по-прежнему
+получает ссылки из Supabase через API; изменить фото можно без правки компонентов.
+
+Публикация портфолио на Vercel Hobby:
+
+Текущий выпуск — личный некоммерческий проект для портфолио, как подтвердил
+владелец. Используются только Vercel Hobby и Supabase Free; платные планы,
+пробные платные подписки и собственный платный домен не подключаются.
+Перед реальным коммерческим запуском условия размещения нужно проверить заново.
+
+1. Подключить только репозиторий kristina-kotova-booking к приложению Vercel.
+2. Импортировать его в нужный аккаунт/команду. Framework — Next.js,
+   корень проекта — ./, Node.js — 24.x. pnpm определяется по packageManager
+   и lockfile; стандартные команды установки/сборки подходят.
+3. В настройках проекта добавить `SUPABASE_URL` и `SUPABASE_PUBLISHABLE_KEY`
+   из локального окружения для Production. Не добавлять префикс `NEXT_PUBLIC_`,
+   secret/service_role key, пароль базы или пароль мастера.
+4. Сохранить тариф Hobby и бесплатный домен vercel.app. Не подключать Pro,
+   платные дополнения или пробный период. При достижении бесплатных лимитов
+   работа ограничивается условиями тарифа; автоматическую платную замену не включать.
+5. Опубликовать проверенную ветку через PR в main. Проверить сайт по HTTPS:
+   контакты, каталог, галерею, календарь, отправку заявки и вход мастера.
+   Закрытые API без сессии должны отвечать 401, кабинет — перенаправлять на вход.
+
+Миграции применяются до выпуска соответствующей версии приложения.
+Зарегистрированная миграция не должна запускаться повторно вручную.
+При смене домена вход по email/паролю продолжает использовать серверные
+сессии; для сброса пароля или email-ссылок нужно обновить Site URL и Redirect URLs
+в Supabase Authentication → URL Configuration.
+
+Документация: [Next.js на Vercel](https://vercel.com/docs/frameworks/full-stack/nextjs),
+[переменные окружения](https://vercel.com/docs/environment-variables),
+[условия Hobby](https://vercel.com/docs/plans/hobby).

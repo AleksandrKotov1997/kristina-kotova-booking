@@ -49,7 +49,7 @@
   gap: var(--space-8);
   min-width: 0;
 }
-.menuButton {
+.controls .menuButton {
   display: none;
 }
 .drawer {
@@ -84,7 +84,7 @@
   .controls {
     gap: var(--space-4);
   }
-  .menuButton {
+  .controls .menuButton {
     display: inline-flex;
     align-items: center;
     justify-content: center;

@@ -4,7 +4,7 @@ import { WorksView } from "@/views/WorksView";
 export const metadata: Metadata = {
   title: "Работы",
   description:
-    "Галерея ресниц и бровей: идеи образов, наращивание и ламинирование, архитектура бровей.",
+    "Ресницы и брови крупным планом: идеи образов и иллюстрации процедур студии Кристины Котовой в Астане.",
 };
 
 export default function WorksPage() {

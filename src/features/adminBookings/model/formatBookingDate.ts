@@ -1,4 +1,4 @@
-const bookingDateFormatter = new Intl.DateTimeFormat("ru-RU", {
+const bookingDateFormatter = new Intl.DateTimeFormat("ru-KZ", {
   day: "numeric",
   month: "short",
   year: "numeric",
