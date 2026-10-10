@@ -15,7 +15,7 @@ export const HomeHero = () => {
     <section className={styles.hero} aria-labelledby="home-hero-title">
       <PageContainer className={styles.inner}>
         <div className={styles.content}>
-          <p className={styles.badge}>{studioCity} · Lash &amp; Brow Studio</p>
+          <p className={styles.badge}>{studioCity} · Ресницы и брови</p>
 
           <h1 className={styles.title} id="home-hero-title">
             <span>Ресницы, которые</span> <em>говорят за вас</em>

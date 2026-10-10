@@ -4,7 +4,7 @@ import { AboutView } from "@/views/AboutView";
 export const metadata: Metadata = {
   title: "О мастере",
   description:
-    "Знакомство с Кристиной Котовой: подход к работе, уход за ресницами и бровями, комфорт на процедуре.",
+    "Кристина Котова — мастер по ресницам и бровям в Астане. Индивидуальный подбор эффекта, аккуратная работа и комфорт на процедуре.",
 };
 
 export default function AboutPage() {

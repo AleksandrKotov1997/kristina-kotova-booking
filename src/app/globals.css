@@ -48,22 +48,11 @@
   --color-primary-soft: #ead2c3;
   --color-primary-tint: rgba(181, 113, 74, 0.1);
 
-  --color-photo-decoration: rgba(255, 255, 255, 0.12);
-  --color-photo-icon-bg: rgba(255, 255, 255, 0.4);
-  --color-photo-icon: rgba(255, 255, 255, 0.8);
-  --color-photo-caption: rgba(255, 255, 255, 0.7);
-
   --gradient-hero: linear-gradient(
     150deg,
     #fdf8f4 0%,
     #f7ede4 40%,
     #f2e8df 100%
-  );
-  --gradient-photo-placeholder: linear-gradient(
-    135deg,
-    #ede3da 0%,
-    #e8c4a0 60%,
-    #d4b9a8 100%
   );
   --gradient-hero-warm-glow: radial-gradient(
     circle,
