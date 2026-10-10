@@ -79,3 +79,30 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+@media (max-width: 1023px) {
+  .layout {
+    gap: var(--space-10);
+  }
+  .benefitGrid {
+    gap: var(--space-3);
+  }
+}
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+  .figure {
+    width: min(100%, 420px);
+    margin: 0 auto;
+  }
+  .title {
+    margin-bottom: var(--space-6);
+  }
+}
+@media (max-width: 479px) {
+  .benefitGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

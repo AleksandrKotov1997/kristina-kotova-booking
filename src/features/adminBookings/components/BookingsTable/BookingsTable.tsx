@@ -8,25 +8,19 @@ import { BookingStatus } from "../BookingStatus/BookingStatus";
 import { BookingActions } from "../BookingActions/BookingActions";
 import styles from "./BookingsTable.module.css";
 
-export const BookingsTable = ({
-  bookings,
-  total,
-  page,
-  pageSize,
-  loading,
-  disabled,
-  onPageChange,
-  onSelect,
-}: {
+export interface BookingsTableProps {
   bookings: AdminBooking[];
-  total: number;
-  page: number;
-  pageSize: number;
   loading: boolean;
   disabled: boolean;
-  onPageChange: (page: number) => void;
   onSelect: (booking: AdminBooking, status: BookingStatusValue) => void;
-}) => {
+}
+
+export const BookingsTable = ({
+  bookings,
+  loading,
+  disabled,
+  onSelect,
+}: BookingsTableProps) => {
   const columns: TableColumnsType<AdminBooking> = [
     {
       title: "Клиент",
@@ -96,17 +90,7 @@ export const BookingsTable = ({
         loading={loading}
         scroll={{ x: 1070 }}
         locale={{ emptyText: "Записей по выбранным условиям нет." }}
-        pagination={{
-          current: page,
-          pageSize,
-          total,
-          showSizeChanger: false,
-          onChange: onPageChange,
-          showTotal: (count, range) =>
-            count
-              ? "Показано " + range[0] + "–" + range[1] + " из " + count
-              : "Всего 0 записей",
-        }}
+        pagination={false}
       />
     </div>
   );

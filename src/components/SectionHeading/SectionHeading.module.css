@@ -17,3 +17,9 @@
   color: var(--color-text-muted);
   line-height: var(--line-height-relaxed);
 }
+
+@media (max-width: 767px) {
+  .heading {
+    margin-bottom: var(--space-8);
+  }
+}

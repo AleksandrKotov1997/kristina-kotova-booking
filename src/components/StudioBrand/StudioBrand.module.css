@@ -63,3 +63,12 @@
 .footer:focus-visible {
   outline-color: var(--color-accent);
 }
+
+@media (max-width: 479px) {
+  .footer .texts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+}

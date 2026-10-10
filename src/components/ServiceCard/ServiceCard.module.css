@@ -94,3 +94,19 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+@media (max-width: 767px) {
+  .card {
+    padding: var(--space-5);
+  }
+  .heading {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .title {
+    flex: 1 1 160px;
+  }
+  .bookingLink {
+    min-height: var(--touch-target-size);
+  }
+}

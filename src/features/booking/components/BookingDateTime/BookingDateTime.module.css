@@ -105,3 +105,31 @@
 .calendar :global(.ant-picker-panel) {
   background: var(--color-surface);
 }
+
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .day {
+    width: 100%;
+    height: var(--touch-target-size);
+  }
+  .calendar :global(.ant-picker-content) {
+    table-layout: fixed;
+    width: 100%;
+  }
+  .calendar :global(.ant-picker-cell) {
+    padding: var(--space-1) 0;
+  }
+  .monthNavigation {
+    padding-inline: 0;
+  }
+  .monthNavigation button {
+    width: var(--touch-target-size);
+    height: var(--touch-target-size);
+  }
+  .placeholder {
+    padding-block: var(--space-6);
+  }
+}

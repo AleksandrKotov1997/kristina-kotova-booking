@@ -59,3 +59,13 @@
 .submit:global(.ant-btn-primary):enabled:hover {
   background: var(--color-primary-hover);
 }
+
+@media (max-width: 479px) {
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .actions button {
+    width: 100%;
+  }
+}

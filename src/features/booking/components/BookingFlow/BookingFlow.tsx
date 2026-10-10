@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { Button, Skeleton } from "antd";
 import { ActionLink } from "@/components/ActionLink";
 import type { ServiceSelectionRequest } from "@/features/services/model/serviceSelection";
@@ -15,13 +16,25 @@ interface BookingFlowProps {
 export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
   const flow = useBookingFlow(selectionRequest);
   const { selectedService, date, slot, receipt } = flow;
+  const stepHeading = useRef<HTMLHeadingElement>(null);
+  const navigationKey = flow.step + ":" + (receipt?.id ?? "");
+  const previousNavigationKey = useRef(navigationKey);
+
+  useEffect(() => {
+    if (previousNavigationKey.current === navigationKey) return;
+    previousNavigationKey.current = navigationKey;
+    stepHeading.current?.focus({ preventScroll: true });
+    stepHeading.current?.scrollIntoView({ block: "start" });
+  }, [navigationKey]);
   if (receipt)
     return (
       <div className={styles.success} role="status">
         <span className={styles.successIcon} aria-hidden="true">
           ✓
         </span>
-        <h2 className={styles.title}>Заявка отправлена</h2>
+        <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
+          Заявка отправлена
+        </h2>
         <p>
           Заявка отправлена. Мастер свяжется с вами в течение 10 минут для
           уточнения и подтверждения записи.
@@ -61,7 +74,9 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
           </div>
         ) : flow.services.isError || flow.calendar.isError ? (
           <div role="alert" className={styles.state}>
-            <h2 className={styles.title}>Не удалось загрузить запись</h2>
+            <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
+              Не удалось загрузить запись
+            </h2>
             <p>Попробуйте получить актуальные услуги и расписание ещё раз.</p>
             <Button
               loading={flow.services.isFetching || flow.calendar.isFetching}
@@ -79,7 +94,9 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
           <>
             {flow.step === 1 && (
               <>
-                <h2 className={styles.title}>Выберите услугу</h2>
+                <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
+                  Выберите услугу
+                </h2>
                 {selectionRequest.status === "invalid" && (
                   <p className={styles.notice} role="alert">
                     Некорректная ссылка на услугу. Выберите процедуру ниже.
@@ -109,7 +126,9 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
             )}
             {flow.step === 2 && selectedService && (
               <>
-                <h2 className={styles.title}>Выберите дату и время</h2>
+                <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
+                  Выберите дату и время
+                </h2>
                 <p className={styles.service}>
                   {selectedService.name} · {selectedService.durationMinutes} мин
                 </p>
@@ -140,7 +159,9 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
             )}
             {flow.step === 3 && selectedService && date && slot && (
               <>
-                <h2 className={styles.title}>Ваши контакты</h2>
+                <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
+                  Ваши контакты
+                </h2>
                 <BookingSummary
                   serviceName={selectedService.name}
                   price={selectedService.price}

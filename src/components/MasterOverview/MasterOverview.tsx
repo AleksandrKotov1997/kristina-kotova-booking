@@ -22,7 +22,7 @@ export const MasterOverview = ({
             className={styles.image}
             fill
             loading={imageLoading}
-            sizes="(max-width: 1024px) 45vw, 420px"
+            sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 45vw, 420px"
           />
         </div>
         <figcaption className={styles.caption}>

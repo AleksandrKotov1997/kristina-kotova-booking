@@ -53,3 +53,11 @@
   color: var(--color-contact-text-muted);
   font-size: var(--font-size-eyebrow);
 }
+
+@media (max-width: 767px) {
+  .value a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target-size);
+  }
+}

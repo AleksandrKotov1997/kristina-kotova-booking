@@ -1,0 +1,105 @@
+.mobile {
+  display: none;
+}
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+.pagination :global(.ant-pagination-item-active) {
+  border-color: var(--color-primary);
+}
+.pagination :global(.ant-pagination-item-active) a {
+  color: var(--color-primary);
+}
+.cards {
+  display: grid;
+  gap: var(--space-4);
+  list-style: none;
+}
+.card {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-service-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-service-card);
+}
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+.heading h2 {
+  min-width: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  overflow-wrap: anywhere;
+}
+.phone {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target-size);
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+.service {
+  margin-top: var(--space-2);
+  overflow-wrap: anywhere;
+}
+.details {
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-4);
+  margin-block: var(--space-4);
+  border-block: 1px solid var(--color-border-soft);
+  font-size: var(--font-size-sm);
+}
+.details div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.details dt {
+  color: var(--color-text-muted);
+}
+.details dd {
+  font-weight: var(--font-weight-semibold);
+}
+.empty {
+  padding: var(--space-8) var(--space-5);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+  .pagination {
+    justify-content: center;
+  }
+  .pagination :global(.ant-pagination-total-text) {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+  .pagination:global(.ant-pagination-mini) :global(.ant-pagination-item),
+  .pagination:global(.ant-pagination-mini) :global(.ant-pagination-prev),
+  .pagination:global(.ant-pagination-mini) :global(.ant-pagination-next),
+  .pagination:global(.ant-pagination-mini) :global(.ant-pagination-jump-prev),
+  .pagination:global(.ant-pagination-mini) :global(.ant-pagination-jump-next) {
+    min-width: var(--touch-target-size);
+    height: var(--touch-target-size);
+    line-height: var(--touch-target-size);
+  }
+}

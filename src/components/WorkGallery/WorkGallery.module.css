@@ -13,3 +13,14 @@
 .item:nth-child(8n + 5) {
   grid-row: span 2;
 }
+
+@media (max-width: 1023px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .grid {
+    gap: var(--space-3);
+  }
+}

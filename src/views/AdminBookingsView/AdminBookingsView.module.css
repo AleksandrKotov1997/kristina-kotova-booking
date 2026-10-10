@@ -47,3 +47,27 @@
   font-size: var(--font-size-label);
   margin-bottom: var(--space-4);
 }
+
+@media (max-width: 767px) {
+  .search:global(.ant-input-search) {
+    width: 100%;
+  }
+  .date {
+    flex: 1;
+    min-width: 0;
+  }
+  .statuses {
+    flex-wrap: wrap;
+  }
+  .filters button,
+  .statuses button {
+    min-height: var(--touch-target-size);
+  }
+  .filters :global(.ant-picker),
+  .filters :global(.ant-input-affix-wrapper) {
+    min-height: var(--touch-target-size);
+  }
+  .filters input {
+    font-size: var(--font-size-base);
+  }
+}

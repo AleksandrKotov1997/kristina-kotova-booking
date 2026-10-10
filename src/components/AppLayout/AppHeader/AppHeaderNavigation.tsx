@@ -5,11 +5,22 @@ import { usePathname } from "next/navigation";
 import { publicNavigationItems } from "../navigation";
 import styles from "./AppHeader.module.css";
 
-export const AppHeaderNavigation = () => {
+export const AppHeaderNavigation = ({
+  className,
+  onNavigate,
+  ariaLabel = "Основная навигация",
+}: {
+  className?: string;
+  onNavigate?: () => void;
+  ariaLabel?: string;
+}) => {
   const pathname = usePathname();
 
   return (
-    <nav className={styles.navigation} aria-label="Основная навигация">
+    <nav
+      className={[styles.navigation, className].filter(Boolean).join(" ")}
+      aria-label={ariaLabel}
+    >
       {publicNavigationItems.map((item) => {
         const isActive =
           pathname === item.href ||
@@ -19,6 +30,7 @@ export const AppHeaderNavigation = () => {
           <Link
             key={item.href}
             href={item.href}
+            onClick={onNavigate}
             className={styles.navigationLink}
             aria-current={isActive ? "page" : undefined}
           >

@@ -17,3 +17,17 @@
   font-size: var(--font-size-sm);
   margin-top: var(--space-2);
 }
+
+@media (max-width: 767px) {
+  .header {
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  .header h1 {
+    font-size: var(--font-size-section-min);
+  }
+  .header button {
+    min-height: var(--touch-target-size);
+  }
+}

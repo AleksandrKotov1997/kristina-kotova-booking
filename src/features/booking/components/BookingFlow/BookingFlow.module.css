@@ -125,3 +125,30 @@
   font-size: var(--font-size-section-min);
   justify-self: center;
 }
+
+@media (max-width: 767px) {
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+  .steps li {
+    flex-direction: column;
+    text-align: center;
+    font-size: var(--font-size-label);
+  }
+  .card,
+  .success {
+    padding: var(--space-4);
+    border-radius: var(--radius-service-card);
+  }
+  .actions button {
+    flex: 1;
+  }
+  .actions button:only-child {
+    margin-left: 0;
+  }
+  .success > a {
+    width: 100%;
+  }
+}

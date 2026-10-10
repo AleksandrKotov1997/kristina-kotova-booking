@@ -1,5 +1,5 @@
 .container {
-  width: calc(100% - var(--space-8) * 2);
+  width: calc(100% - var(--container-gutter) * 2);
   max-width: var(--container-width);
   margin-inline: auto;
 }

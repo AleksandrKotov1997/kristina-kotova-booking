@@ -3,3 +3,9 @@
   align-items: center;
   gap: var(--space-4);
 }
+
+@media (max-width: 767px) {
+  .container button {
+    min-height: var(--touch-target-size);
+  }
+}

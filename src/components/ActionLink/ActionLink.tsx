@@ -7,6 +7,8 @@ interface ActionLinkProps {
   children: ReactNode;
   variant?: "primary" | "secondary";
   size?: "regular" | "compact";
+  className?: string;
+  onClick?: () => void;
 }
 
 export const ActionLink = ({
@@ -14,11 +16,16 @@ export const ActionLink = ({
   children,
   variant = "primary",
   size = "regular",
+  className,
+  onClick,
 }: ActionLinkProps) => {
   return (
     <Link
       href={href}
-      className={`${styles.link} ${styles[variant]} ${styles[size]}`}
+      className={[styles.link, styles[variant], styles[size], className]
+        .filter(Boolean)
+        .join(" ")}
+      onClick={onClick}
     >
       {children}
     </Link>
