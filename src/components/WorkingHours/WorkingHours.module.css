@@ -51,3 +51,9 @@
 .retryButton:not(:disabled):hover {
   color: var(--color-text-light);
 }
+
+@media (max-width: 767px) {
+  .schedule {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

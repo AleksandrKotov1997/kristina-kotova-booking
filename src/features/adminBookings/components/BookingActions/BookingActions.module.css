@@ -41,3 +41,25 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
+
+@media (max-width: 767px) {
+  .actions button {
+    flex: 1;
+    min-height: var(--touch-target-size);
+    padding-inline: var(--space-3);
+  }
+  .details {
+    overflow-wrap: anywhere;
+  }
+  .footer button {
+    min-height: var(--touch-target-size);
+  }
+}
+@media (max-width: 479px) {
+  .footer {
+    flex-direction: column-reverse;
+  }
+  .footer button {
+    width: 100%;
+  }
+}

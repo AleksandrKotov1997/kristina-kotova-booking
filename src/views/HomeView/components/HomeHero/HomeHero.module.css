@@ -242,3 +242,63 @@
   margin-top: var(--space-1);
   font-size: var(--font-size-caption);
 }
+
+@media (max-width: 1023px) {
+  .inner {
+    gap: var(--space-10);
+  }
+  .statistics {
+    gap: var(--space-6);
+  }
+  .sterilityCard {
+    left: var(--space-3);
+    padding-inline: var(--space-3);
+  }
+  .experienceCard {
+    right: var(--space-3);
+  }
+}
+@media (max-width: 767px) {
+  .hero {
+    min-height: auto;
+  }
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--space-12);
+    gap: var(--space-10);
+  }
+  .badge {
+    margin-bottom: var(--space-5);
+  }
+  .title {
+    font-size: clamp(var(--font-size-hero-min), 8vw, var(--font-size-section));
+  }
+  .actions {
+    margin-top: var(--space-6);
+  }
+  .statistics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+  }
+  .visual {
+    width: min(100%, 420px);
+    justify-self: center;
+  }
+  .sterilityCard {
+    bottom: var(--space-5);
+  }
+  .experienceCard {
+    top: var(--space-5);
+  }
+}
+@media (max-width: 479px) {
+  .actions {
+    flex-direction: column;
+  }
+  .actions > a {
+    width: 100%;
+  }
+}

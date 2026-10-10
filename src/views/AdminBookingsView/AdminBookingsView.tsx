@@ -14,7 +14,7 @@ import { useAdminBookings } from "@/features/adminBookings/hooks/useAdminBooking
 import { useBookingStatusAction } from "@/features/adminBookings/hooks/useBookingStatusAction";
 import { AdminQueryState } from "@/features/adminBookings/components/AdminQueryState/AdminQueryState";
 import { AdminPageHeader } from "@/features/adminBookings/components/AdminPageHeader/AdminPageHeader";
-import { BookingsTable } from "@/features/adminBookings/components/BookingsTable/BookingsTable";
+import { BookingsList } from "@/features/adminBookings/components/BookingsList/BookingsList";
 import { BookingStatusDialog } from "@/features/adminBookings/components/BookingActions/BookingStatusDialog";
 import styles from "./AdminBookingsView.module.css";
 
@@ -109,7 +109,7 @@ export const AdminBookingsView = ({
           }}
         />
       ) : (
-        <BookingsTable
+        <BookingsList
           bookings={query.data.items}
           total={query.data.total}
           page={query.data.page}

@@ -1,5 +1,5 @@
 .section {
-  padding-block: var(--space-25);
+  padding-block: var(--section-padding);
   background: var(--color-contact-bg);
 }
 
@@ -73,4 +73,28 @@
 .whatsappLink:hover {
   text-decoration: underline;
   text-underline-offset: var(--space-1);
+}
+
+@media (max-width: 1023px) {
+  .layout {
+    gap: var(--space-10);
+  }
+  .card {
+    padding: var(--space-6);
+  }
+}
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+  .card {
+    padding: var(--space-5);
+  }
+  .description {
+    margin-bottom: var(--space-6);
+  }
+  .whatsappLink {
+    padding-block: var(--space-3);
+  }
 }

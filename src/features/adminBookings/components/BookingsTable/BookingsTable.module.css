@@ -23,12 +23,6 @@
 .table :global(.ant-table-wrapper .ant-table-tbody > tr:hover > td) {
   background: var(--color-surface-muted);
 }
-.table :global(.ant-pagination .ant-pagination-item-active) {
-  border-color: var(--color-primary);
-}
-.table :global(.ant-pagination .ant-pagination-item-active a) {
-  color: var(--color-primary);
-}
 .cell {
   display: grid;
   gap: var(--space-1);

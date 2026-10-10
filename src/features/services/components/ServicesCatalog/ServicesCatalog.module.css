@@ -42,7 +42,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
   gap: var(--space-6);
   list-style: none;
 }
@@ -94,4 +94,22 @@
   color: var(--color-primary);
   border-color: var(--color-primary-soft);
   border-radius: var(--radius-pill);
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+  .categories {
+    margin-bottom: var(--space-8);
+  }
+  .categoryButton {
+    flex: 1;
+    padding-inline: var(--space-4);
+  }
+  .skeleton,
+  .state {
+    padding: var(--space-5);
+  }
 }

@@ -27,3 +27,20 @@
   gap: var(--space-4);
   margin-top: var(--space-8);
 }
+
+@media (max-width: 767px) {
+  .heading {
+    padding-block: var(--space-12) var(--space-8);
+  }
+  .description {
+    font-size: var(--font-size-base);
+  }
+}
+@media (max-width: 479px) {
+  .actions {
+    flex-direction: column;
+  }
+  .actions > a {
+    width: 100%;
+  }
+}

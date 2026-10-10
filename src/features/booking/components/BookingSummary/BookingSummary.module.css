@@ -20,3 +20,17 @@
   font-weight: var(--font-weight-semibold);
   text-align: right;
 }
+
+@media (max-width: 479px) {
+  .summary {
+    padding: var(--space-4);
+  }
+  .summary div {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .summary dd {
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+}

@@ -45,3 +45,12 @@
   font-size: var(--font-size-label);
   color: var(--color-text-muted);
 }
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .option {
+    padding-inline: var(--space-4);
+  }
+}
