@@ -11,20 +11,17 @@ interface AppFooterProps {
 export const AppFooter = ({ city }: AppFooterProps) => (
   <footer className={styles.footer}>
     <PageContainer className={styles.inner}>
-      <StudioBrand variant="footer" />
-      <div className={styles.navigationArea}>
-        <nav
-          className={styles.navigation}
-          aria-label="Навигация внизу страницы"
-        >
-          {publicNavigationItems
-            .filter((item) => item.href !== "/")
-            .map((item) => (
-              <Link key={item.href} href={item.href} className={styles.link}>
-                {item.label}
-              </Link>
-            ))}
-        </nav>
+      <div className={styles.brand}>
+        <StudioBrand variant="footer" />
+      </div>
+      <nav className={styles.navigation} aria-label="Навигация внизу страницы">
+        {publicNavigationItems
+          .filter((item) => item.href !== "/")
+          .map((item) => (
+            <Link key={item.href} href={item.href} className={styles.link}>
+              {item.label}
+            </Link>
+          ))}
         <Link
           href="/admin"
           prefetch={false}
@@ -45,7 +42,7 @@ export const AppFooter = ({ city }: AppFooterProps) => (
           </svg>
           Кабинет мастера
         </Link>
-      </div>
+      </nav>
       <p className={styles.copyright}>
         © {new Date().getUTCFullYear()} Kristina Kotova
         {city ? " · " + city : ""}
