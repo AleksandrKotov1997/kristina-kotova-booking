@@ -13,6 +13,12 @@
   gap: var(--space-4);
 }
 
+.navigationArea {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
 .navigation {
   display: flex;
   flex-wrap: wrap;
@@ -32,6 +38,20 @@
 
 .link:focus-visible {
   outline-color: var(--color-accent);
+}
+
+.masterLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: fit-content;
+  min-height: var(--touch-target-size);
+}
+
+.masterLink svg {
+  flex-shrink: 0;
+  width: var(--space-4);
+  height: var(--space-4);
 }
 
 .copyright {

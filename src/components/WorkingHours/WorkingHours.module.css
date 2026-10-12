@@ -22,11 +22,14 @@
 }
 
 .row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-1) var(--space-2);
+  display: grid;
+  align-content: start;
+  min-width: 0;
+  gap: var(--space-1);
+}
+
+.row:only-child {
+  grid-column: 1 / -1;
 }
 
 .row dt,
@@ -35,6 +38,7 @@
 }
 
 .row dd {
+  font-size: var(--font-size-sm);
   color: var(--color-text-light);
   font-weight: var(--font-weight-semibold);
 }

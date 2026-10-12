@@ -110,7 +110,11 @@ describe("master access", () => {
         .getAll()
         .every(
           (cookie) =>
-            cookie.httpOnly && cookie.sameSite === "lax" && cookie.path === "/",
+            cookie.httpOnly &&
+            cookie.sameSite === "lax" &&
+            cookie.path === "/" &&
+            cookie.maxAge !== undefined &&
+            cookie.maxAge > 0,
         ),
     ).toBe(true);
     expect(response.headers.get("Cache-Control")).toBe("private, no-store");
@@ -130,6 +134,23 @@ describe("master access", () => {
 });
 
 describe("session lifecycle", () => {
+  it("restores the master session from persistent cookies on a new request", async () => {
+    const { context, fetchMock } = await setupSession(true);
+    const savedCookies = context
+      .applyResponseCookies(NextResponse.json({ success: true }))
+      .cookies.getAll()
+      .map(({ name, value }) => ({ name, value }));
+
+    await expect(
+      getVerifiedMaster(createAuthContext(savedCookies)),
+    ).resolves.toEqual({ id: user.id, email: user.email });
+    expect(
+      fetchMock.mock.calls.filter(([url]) =>
+        String(url).includes("grant_type=password"),
+      ),
+    ).toHaveLength(1);
+  });
+
   it("refreshes an expired session and forwards its new cookie", async () => {
     const { context, fetchMock } = await setupSession(true, 200, 200, 1);
     const original = context

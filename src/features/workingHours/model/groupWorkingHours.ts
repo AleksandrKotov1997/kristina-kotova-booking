@@ -16,7 +16,7 @@ export const groupWorkingHours = (schedule: WorkingDaySchedule[]) => {
     const hoursLabel = !day
       ? "Уточняется"
       : day.isWorkingDay
-        ? day.startTime + " – " + day.endTime
+        ? "с " + day.startTime + " до " + day.endTime + " часов"
         : "Выходной";
     const previousGroup = groups.at(-1);
 
@@ -27,12 +27,20 @@ export const groupWorkingHours = (schedule: WorkingDaySchedule[]) => {
     }
   }
 
+  const worksEveryDay = weekdays.every(
+    (weekday) => scheduleByDay.get(weekday)?.isWorkingDay === true,
+  );
+
   return groups.map((group) => ({
     key: group.firstDay,
     daysLabel:
-      group.firstDay === group.lastDay
-        ? weekdayLabels[group.firstDay]
-        : weekdayLabels[group.firstDay] + " – " + weekdayLabels[group.lastDay],
+      worksEveryDay && groups.length === 1
+        ? "Ежедневно"
+        : group.firstDay === group.lastDay
+          ? weekdayLabels[group.firstDay]
+          : weekdayLabels[group.firstDay] +
+            " – " +
+            weekdayLabels[group.lastDay],
     hoursLabel: group.hoursLabel,
   }));
 };

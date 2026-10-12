@@ -12,15 +12,40 @@ export const AppFooter = ({ city }: AppFooterProps) => (
   <footer className={styles.footer}>
     <PageContainer className={styles.inner}>
       <StudioBrand variant="footer" />
-      <nav className={styles.navigation} aria-label="Навигация внизу страницы">
-        {publicNavigationItems
-          .filter((item) => item.href !== "/")
-          .map((item) => (
-            <Link key={item.href} href={item.href} className={styles.link}>
-              {item.label}
-            </Link>
-          ))}
-      </nav>
+      <div className={styles.navigationArea}>
+        <nav
+          className={styles.navigation}
+          aria-label="Навигация внизу страницы"
+        >
+          {publicNavigationItems
+            .filter((item) => item.href !== "/")
+            .map((item) => (
+              <Link key={item.href} href={item.href} className={styles.link}>
+                {item.label}
+              </Link>
+            ))}
+        </nav>
+        <Link
+          href="/admin"
+          prefetch={false}
+          className={`${styles.link} ${styles.masterLink}`}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21v-2a8 8 0 0 1 16 0v2" />
+          </svg>
+          Кабинет мастера
+        </Link>
+      </div>
       <p className={styles.copyright}>
         © {new Date().getUTCFullYear()} Kristina Kotova
         {city ? " · " + city : ""}
