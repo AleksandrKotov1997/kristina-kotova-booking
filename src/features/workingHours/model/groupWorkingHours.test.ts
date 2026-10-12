@@ -18,6 +18,16 @@ const workingDay = (
   });
 
 describe("groupWorkingHours", () => {
+  it("показывает ежедневный приём только при одинаковых часах всей недели", () => {
+    expect(
+      groupWorkingHours(
+        weekdays.map((day) => workingDay(day, "10:00", "20:00")),
+      ),
+    ).toEqual([
+      { key: 1, daysLabel: "Ежедневно", hoursLabel: "с 10:00 до 20:00 часов" },
+    ]);
+  });
+
   it("показывает неделю по порядку и объединяет одинаковые соседние часы", () => {
     const schedule = weekdays
       .map((day) =>
@@ -26,8 +36,8 @@ describe("groupWorkingHours", () => {
       .reverse();
 
     expect(groupWorkingHours(schedule)).toEqual([
-      { key: 1, daysLabel: "Пн – Пт", hoursLabel: "18:00 – 21:00" },
-      { key: 6, daysLabel: "Сб – Вс", hoursLabel: "10:00 – 20:00" },
+      { key: 1, daysLabel: "Пн – Пт", hoursLabel: "с 18:00 до 21:00 часов" },
+      { key: 6, daysLabel: "Сб – Вс", hoursLabel: "с 10:00 до 20:00 часов" },
     ]);
   });
 
@@ -44,16 +54,16 @@ describe("groupWorkingHours", () => {
       { key: 1, daysLabel: "Пн – Вт", hoursLabel: "Уточняется" },
       { key: 3, daysLabel: "Ср", hoursLabel: "Выходной" },
       { key: 4, daysLabel: "Чт", hoursLabel: "Уточняется" },
-      { key: 5, daysLabel: "Пт", hoursLabel: "18:00 – 21:00" },
+      { key: 5, daysLabel: "Пт", hoursLabel: "с 18:00 до 21:00 часов" },
       { key: 6, daysLabel: "Сб – Вс", hoursLabel: "Уточняется" },
     ]);
   });
 
   it("не объединяет воскресенье и понедельник через границу недели", () => {
     expect(groupWorkingHours([workingDay(7), workingDay(1)])).toEqual([
-      { key: 1, daysLabel: "Пн", hoursLabel: "18:00 – 21:00" },
+      { key: 1, daysLabel: "Пн", hoursLabel: "с 18:00 до 21:00 часов" },
       { key: 2, daysLabel: "Вт – Сб", hoursLabel: "Уточняется" },
-      { key: 7, daysLabel: "Вс", hoursLabel: "18:00 – 21:00" },
+      { key: 7, daysLabel: "Вс", hoursLabel: "с 18:00 до 21:00 часов" },
     ]);
   });
 });
