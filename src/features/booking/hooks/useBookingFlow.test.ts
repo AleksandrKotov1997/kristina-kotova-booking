@@ -253,4 +253,35 @@ describe("booking recovery after reload", () => {
     expect(createBooking).toHaveBeenCalledTimes(1);
     hook.client.clear();
   });
+  it("uses a new identifier after a definitively closed request is rejected", async () => {
+    vi.mocked(createBooking)
+      .mockRejectedValueOnce(
+        new AxiosError(
+          "Closed request",
+          "ERR_BAD_REQUEST",
+          undefined,
+          undefined,
+          {
+            status: 409,
+            statusText: "Conflict",
+            headers: {},
+            config: { headers: new AxiosHeaders() },
+            data: {
+              error: { code: "REQUEST_CLOSED", message: "Attempt closed" },
+            },
+          },
+        ),
+      )
+      .mockResolvedValueOnce(receipt);
+    const hook = await setupFlow();
+    act(() => hook.result.current.submitContacts(contacts));
+    await waitFor(() => expect(hook.result.current.booking.isError).toBe(true));
+    expect(sessionStorage.getItem("booking.pendingRequestId")).toBeNull();
+    act(() => hook.result.current.submitContacts(contacts));
+    await waitFor(() => expect(hook.result.current.receipt).toEqual(receipt));
+    const calls = vi.mocked(createBooking).mock.calls;
+    expect(calls).toHaveLength(2);
+    expect(calls[1]?.[0].requestId).not.toBe(calls[0]?.[0].requestId);
+    hook.client.clear();
+  });
 });
