@@ -1,6 +1,6 @@
 "use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/shared/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { publicNavigationItems } from "../navigation";
 import styles from "./AppHeader.module.css";
@@ -8,12 +8,13 @@ import styles from "./AppHeader.module.css";
 export const AppHeaderNavigation = ({
   className,
   onNavigate,
-  ariaLabel = "Основная навигация",
+  ariaLabel,
 }: {
   className?: string;
   onNavigate?: () => void;
   ariaLabel?: string;
 }) => {
+  const t = useTranslations("Navigation");
   const pathname = usePathname();
   const [areContactsVisible, setAreContactsVisible] = useState(false);
   useEffect(() => {
@@ -33,7 +34,7 @@ export const AppHeaderNavigation = ({
   return (
     <nav
       className={[styles.navigation, className].filter(Boolean).join(" ")}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t("mainLabel")}
     >
       {publicNavigationItems.map((item) => {
         const isActive =
@@ -50,7 +51,7 @@ export const AppHeaderNavigation = ({
             className={styles.navigationLink}
             aria-current={isActive ? "page" : undefined}
           >
-            {item.label}
+            {t(item.labelKey)}
           </Link>
         );
       })}

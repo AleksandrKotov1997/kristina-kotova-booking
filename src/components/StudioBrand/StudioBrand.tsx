@@ -4,15 +4,21 @@ import styles from "./StudioBrand.module.css";
 
 interface StudioBrandProps {
   variant?: "header" | "footer";
+  homeHref?: string;
+  homeLabel?: string;
 }
 
-export const StudioBrand = ({ variant = "header" }: StudioBrandProps) => (
+export const StudioBrand = ({
+  variant = "header",
+  homeHref = "/",
+  homeLabel = "Kristina Kotova — на главную",
+}: StudioBrandProps) => (
   <Link
-    href="/"
+    href={homeHref}
     className={[styles.brand, variant === "footer" ? styles.footer : ""].join(
       " ",
     )}
-    aria-label="Kristina Kotova — на главную"
+    aria-label={homeLabel}
   >
     <Image
       src="/kristina-kotova-logo.svg"

@@ -8,6 +8,7 @@ import { transformGalleryImage } from "../transformers/transformGalleryImage";
 
 export const getActiveGalleryImages = async ({
   category,
+  locale = "ru",
   limit = 24,
 }: GalleryQuery) => {
   const response = await createSupabaseRestClient().get<unknown>(
@@ -15,7 +16,7 @@ export const getActiveGalleryImages = async ({
     {
       params: {
         select:
-          "id,title,image_url,category,is_active,sort_order,created_at,updated_at",
+          "id,title,title_kk,image_url,category,is_active,sort_order,created_at,updated_at",
         is_active: "eq.true",
         category: category ? "eq." + category : undefined,
         order: "sort_order.asc,id.asc",
@@ -27,5 +28,5 @@ export const getActiveGalleryImages = async ({
   return z
     .array(galleryImageRecordSchema)
     .parse(response.data)
-    .map(transformGalleryImage);
+    .map((record) => transformGalleryImage(record, locale));
 };

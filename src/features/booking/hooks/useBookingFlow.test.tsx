@@ -2,7 +2,9 @@
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AxiosError, AxiosHeaders } from "axios";
-import { createElement, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import type { PublicLocale } from "@/shared/i18n/locales";
+import kkMessages from "@/shared/i18n/messages/kk.json";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getServices } from "@/features/services/api/getServices";
 import { serviceSchema } from "@/features/services/model/schemas";
@@ -19,7 +21,12 @@ import {
 } from "../model/schemas";
 import { bookingQueryKey } from "./useBookingQueries";
 import { useBookingFlow } from "./useBookingFlow";
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
+import { NextIntlClientProvider } from "next-intl";
+import { BookingSessionProvider } from "../components/BookingSession/BookingSessionProvider";
+import ruMessages from "@/shared/i18n/messages/ru.json";
+vi.mock("@/shared/i18n/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn() }),
+}));
 vi.mock("@/features/services/api/getServices");
 vi.mock("../api/bookingApi");
 const service = serviceSchema.parse({
@@ -60,8 +67,19 @@ const setupFlow = async () => {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   });
-  const wrapper = ({ children }: { children: ReactNode }) =>
-    createElement(QueryClientProvider, { client }, children);
+  const wrapper = ({ children }: { children: ReactNode }) => (
+    <QueryClientProvider client={client}>
+      <BookingSessionProvider>
+        <NextIntlClientProvider
+          locale="ru"
+          messages={ruMessages}
+          timeZone="Asia/Almaty"
+        >
+          {children}
+        </NextIntlClientProvider>
+      </BookingSessionProvider>
+    </QueryClientProvider>
+  );
   const hook = renderHook(
     () => useBookingFlow({ status: "requested", serviceId: service.id }),
     { wrapper },
@@ -189,8 +207,19 @@ describe("booking recovery after reload", () => {
     const client = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
-    const wrapper = ({ children }: { children: ReactNode }) =>
-      createElement(QueryClientProvider, { client }, children);
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={client}>
+        <BookingSessionProvider>
+          <NextIntlClientProvider
+            locale="ru"
+            messages={ruMessages}
+            timeZone="Asia/Almaty"
+          >
+            {children}
+          </NextIntlClientProvider>
+        </BookingSessionProvider>
+      </QueryClientProvider>
+    );
     const hook = renderHook(
       () => useBookingFlow({ status: "requested", serviceId: service.id }),
       { wrapper },
@@ -283,5 +312,84 @@ describe("booking recovery after reload", () => {
     expect(calls).toHaveLength(2);
     expect(calls[1]?.[0].requestId).not.toBe(calls[0]?.[0].requestId);
     hook.client.clear();
+  });
+});
+
+describe("booking language changes", () => {
+  it("preserves the complete draft when the localized page remounts and keeps catalog caches separate", async () => {
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    let changeLocale: (locale: PublicLocale) => void = () => {
+      throw new Error("Locale harness is not mounted");
+    };
+    vi.mocked(getServices).mockImplementation(async (query) => [
+      {
+        ...service,
+        name: query.locale === "kk" ? "Кірпікті ұзарту" : service.name,
+      },
+    ]);
+    const LanguageHarness = ({ children }: { children: ReactNode }) => {
+      const [locale, setLocale] = useState<PublicLocale>("ru");
+      useEffect(() => {
+        changeLocale = setLocale;
+      }, []);
+      return (
+        <QueryClientProvider client={client}>
+          <BookingSessionProvider>
+            <NextIntlClientProvider
+              locale={locale}
+              messages={locale === "kk" ? kkMessages : ruMessages}
+              timeZone="Asia/Almaty"
+            >
+              <div key={locale}>{children}</div>
+            </NextIntlClientProvider>
+          </BookingSessionProvider>
+        </QueryClientProvider>
+      );
+    };
+    const hook = renderHook(
+      () => useBookingFlow({ status: "requested", serviceId: service.id }),
+      { wrapper: LanguageHarness },
+    );
+    await waitFor(() =>
+      expect(hook.result.current.selectedService?.id).toBe(service.id),
+    );
+    act(() => hook.result.current.selectDate(available.date));
+    await waitFor(() =>
+      expect(hook.result.current.availability.isSuccess).toBe(true),
+    );
+    const slot = available.slots[0];
+    if (!slot) throw new Error("Fixture slot is missing");
+    act(() => {
+      hook.result.current.selectSlot(slot);
+      hook.result.current.setContacts({
+        clientName: "Әлия Құнанбай",
+        clientPhone: "+7 (701) 123-45-67",
+      });
+      hook.result.current.setStep(3);
+    });
+    act(() => changeLocale("kk"));
+    await waitFor(() =>
+      expect(hook.result.current.selectedService?.name).toBe("Кірпікті ұзарту"),
+    );
+    expect(hook.result.current.step).toBe(3);
+    expect(hook.result.current.date).toBe(available.date);
+    expect(hook.result.current.slot).toEqual(slot);
+    expect(hook.result.current.contacts).toEqual({
+      clientName: "Әлия Құнанбай",
+      clientPhone: "+7 (701) 123-45-67",
+    });
+    expect(createBooking).not.toHaveBeenCalled();
+    expect(client.getQueryData(["services", "booking", "ru"])).toEqual([
+      service,
+    ]);
+    act(() => changeLocale("ru"));
+    await waitFor(() =>
+      expect(hook.result.current.selectedService?.name).toBe(service.name),
+    );
+    expect(hook.result.current.step).toBe(3);
+    expect(hook.result.current.contacts.clientName).toBe("Әлия Құнанбай");
+    client.clear();
   });
 });

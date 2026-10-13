@@ -1,0 +1,38 @@
+.switcher {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 3px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+}
+.switcher button {
+  min-width: 44px;
+  min-height: 38px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color var(--transition-base),
+    background var(--transition-base);
+}
+.switcher button[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+.switcher button:hover:not(:disabled):not([aria-pressed="true"]) {
+  color: var(--color-primary);
+}
+.switcher button:disabled {
+  cursor: wait;
+}
+.switcher button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

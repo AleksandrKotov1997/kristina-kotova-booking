@@ -10,7 +10,10 @@ import type { BookingReceipt } from "../model/types";
 type RecoveryState =
   | { status: "checking" }
   | { status: "ready"; receipt: BookingReceipt | null; wasNotCreated: boolean }
-  | { status: "error"; message: string };
+  | {
+      status: "error";
+      code: "storageRead" | "connection" | "storageSave" | "storageClear";
+    };
 
 const checkPendingRequest = async (): Promise<RecoveryState> => {
   let requestId: string | null;
@@ -19,8 +22,7 @@ const checkPendingRequest = async (): Promise<RecoveryState> => {
   } catch {
     return {
       status: "error",
-      message:
-        "Браузер не позволяет сохранить результат отправки. Разрешите хранение данных для сайта и повторите проверку.",
+      code: "storageRead",
     };
   }
   if (!requestId)
@@ -32,8 +34,7 @@ const checkPendingRequest = async (): Promise<RecoveryState> => {
   } catch {
     return {
       status: "error",
-      message:
-        "Не удалось проверить предыдущую отправку. Проверьте соединение и повторите проверку, прежде чем создавать новую заявку.",
+      code: "connection",
     };
   }
 };
@@ -63,8 +64,7 @@ export const useBookingRecovery = () => {
     } catch {
       setState({
         status: "error",
-        message:
-          "Заявка не отправлена: браузер не позволяет сохранить идентификатор попытки. Разрешите хранение данных для сайта и повторите проверку.",
+        code: "storageSave",
       });
       return false;
     }
@@ -75,8 +75,7 @@ export const useBookingRecovery = () => {
     } catch {
       setState({
         status: "error",
-        message:
-          "Браузер не позволяет завершить предыдущую попытку. Разрешите хранение данных для сайта и повторите проверку.",
+        code: "storageClear",
       });
     }
   };

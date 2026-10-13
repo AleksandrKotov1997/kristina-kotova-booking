@@ -1,7 +1,9 @@
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button, Calendar } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
+import "dayjs/locale/kk";
 import type {
   BookingAvailability,
   BookingCalendar,
@@ -36,15 +38,18 @@ export const BookingDateTime = ({
   onSlotChange,
   onRetry,
 }: BookingDateTimeProps) => {
+  const t = useTranslations("Booking");
+  const locale = useLocale();
+  const common = useTranslations("Common");
   const [calendarValue, setCalendarValue] = useState(() =>
-    dayjs(date ?? calendar.today).locale("ru"),
+    dayjs(date ?? calendar.today).locale(locale),
   );
   return (
     <div className={styles.layout}>
       <div className={styles.calendar}>
         <Calendar
           fullscreen={false}
-          value={calendarValue}
+          value={calendarValue.locale(locale)}
           onChange={setCalendarValue}
           validRange={[dayjs(calendar.today), dayjs(calendar.lastDate)]}
           disabledDate={(day) =>
@@ -57,7 +62,7 @@ export const BookingDateTime = ({
                 styles.day,
                 date === day.format("YYYY-MM-DD") ? styles.selectedDay : "",
               ].join(" ")}
-              aria-label={formatBookingDate(day.format("YYYY-MM-DD"))}
+              aria-label={formatBookingDate(day.format("YYYY-MM-DD"), locale)}
               aria-pressed={date === day.format("YYYY-MM-DD")}
               disabled={
                 !isBookingDateSelectable(day.format("YYYY-MM-DD"), calendar)
@@ -77,17 +82,17 @@ export const BookingDateTime = ({
           headerRender={({ value, onChange }) => (
             <div className={styles.monthNavigation}>
               <Button
-                aria-label="Предыдущий месяц"
+                aria-label={t("previousMonth")}
                 disabled={!value.isAfter(dayjs(calendar.today), "month")}
                 onClick={() => onChange(value.subtract(1, "month"))}
               >
                 ‹
               </Button>
               <span className={styles.month}>
-                {value.locale("ru").format("MMMM YYYY")}
+                {value.locale(locale).format("MMMM YYYY")}
               </span>
               <Button
-                aria-label="Следующий месяц"
+                aria-label={t("nextMonth")}
                 disabled={!value.isBefore(dayjs(calendar.lastDate), "month")}
                 onClick={() => onChange(value.add(1, "month"))}
               >
@@ -97,8 +102,9 @@ export const BookingDateTime = ({
           )}
         />
         <p className={styles.note}>
-          Время указано для Астаны. Запись доступна до{" "}
-          {formatBookingDate(calendar.lastDate)}
+          {t("calendarHint", {
+            date: formatBookingDate(calendar.lastDate, locale),
+          })}
         </p>
       </div>
       <div
@@ -107,29 +113,24 @@ export const BookingDateTime = ({
         aria-busy={date !== null && isLoading}
       >
         {date === null ? (
-          <p className={styles.placeholder}>
-            Выберите дату, чтобы увидеть доступное время.
-          </p>
+          <p className={styles.placeholder}>{t("chooseDateHint")}</p>
         ) : (
           <>
-            <h3 className={styles.date}>{formatBookingDate(date)}</h3>
+            <h3 className={styles.date}>{formatBookingDate(date, locale)}</h3>
             {isError ? (
               <div role="alert">
-                <p>Не удалось загрузить доступное время.</p>
+                <p>{t("availabilityError")}</p>
                 <Button loading={isFetching} onClick={onRetry}>
-                  Попробовать снова
+                  {common("retry")}
                 </Button>
               </div>
             ) : isLoading ? (
-              <p role="status">Загружаем свободное время…</p>
+              <p role="status">{t("availabilityLoading")}</p>
             ) : !availability || availability.slots.length === 0 ? (
-              <p role="status">
-                На эту дату нет времени для выбранной процедуры. Выберите другой
-                день.
-              </p>
+              <p role="status">{t("noSlots")}</p>
             ) : (
               <>
-                <div className={styles.slots} aria-label="Время записи">
+                <div className={styles.slots} aria-label={t("timeLabel")}>
                   {availability.slots.map((time) => (
                     <button
                       type="button"
@@ -143,8 +144,9 @@ export const BookingDateTime = ({
                       aria-pressed={slot?.startTime === time.startTime}
                       disabled={!time.isAvailable}
                       aria-label={
-                        time.startTime +
-                        (time.isAvailable ? "" : " — недоступно")
+                        time.isAvailable
+                          ? time.startTime
+                          : t("unavailableTime", { time: time.startTime })
                       }
                       onClick={() => onSlotChange(time)}
                     >
@@ -153,12 +155,9 @@ export const BookingDateTime = ({
                   ))}
                 </div>
                 {!availability.slots.some((time) => time.isAvailable) && (
-                  <p role="status">Все слоты заняты. Выберите другой день.</p>
+                  <p role="status">{t("allOccupied")}</p>
                 )}
-                <p className={styles.note}>
-                  Недоступное время зачёркнуто. Процедура должна закончиться до
-                  закрытия.
-                </p>
+                <p className={styles.note}>{t("availabilityHint")}</p>
               </>
             )}
           </>

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 // Next.js hydration and Ant Design use inline scripts/styles. Keep static
@@ -20,6 +21,9 @@ const contentSecurityPolicy = [
 const nextConfig: NextConfig = {
   output: process.env.NEXT_STANDALONE === "true" ? "standalone" : undefined,
   poweredByHeader: false,
+  // Preserve the original routing URL so locale rewrites remain internal
+  // when the development server is bound to 127.0.0.1 or runs in Docker.
+  skipProxyUrlNormalize: true,
   async headers() {
     return [
       {
@@ -38,4 +42,5 @@ const nextConfig: NextConfig = {
     ];
   },
 };
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin("./src/shared/i18n/request.ts");
+export default withNextIntl(nextConfig);

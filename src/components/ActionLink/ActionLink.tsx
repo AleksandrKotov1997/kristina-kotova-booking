@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import styles from "./ActionLink.module.css";
 
-interface ActionLinkProps {
+export interface ActionLinkProps {
   href: string;
   children: ReactNode;
   variant?: "primary" | "secondary";

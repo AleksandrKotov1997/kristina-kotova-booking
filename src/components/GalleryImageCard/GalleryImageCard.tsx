@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import { useState } from "react";
 import { Image } from "antd";
@@ -11,13 +12,14 @@ type GalleryImageCardProps = {
 };
 
 export const GalleryImageCard = ({ image, onOpen }: GalleryImageCardProps) => {
+  const t = useTranslations("Gallery");
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
 
   return (
     <button
       type="button"
       className={styles.card}
-      aria-label={"Открыть фото: " + image.title}
+      aria-label={t("open", { title: image.title })}
       aria-haspopup="dialog"
       onClick={onOpen}
     >
@@ -34,16 +36,16 @@ export const GalleryImageCard = ({ image, onOpen }: GalleryImageCardProps) => {
         onLoad={() => setFailedUrl(null)}
       />
       {failedUrl === image.imageUrl && (
-        <span className={styles.fallback}>Фото недоступно</span>
+        <span className={styles.fallback}>{t("unavailable")}</span>
       )}
       <span className={styles.badge} aria-hidden="true">
-        Фото
+        {t("photo")}
       </span>
       <span className={styles.caption} aria-hidden="true">
         {image.title}
       </span>
       <span className={styles.overlay} aria-hidden="true">
-        <span className={styles.openLabel}>Смотреть</span>
+        <span className={styles.openLabel}>{t("view")}</span>
       </span>
     </button>
   );

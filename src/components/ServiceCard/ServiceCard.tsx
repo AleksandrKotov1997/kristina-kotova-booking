@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/shared/i18n/navigation";
 import type { Service } from "@/features/services/model/types";
 import { formatPrice } from "@/shared/format/formatPrice";
 import styles from "./ServiceCard.module.css";
@@ -12,13 +13,17 @@ export const ServiceCard = ({
   service,
   headingLevel = 3,
 }: ServiceCardProps) => {
+  const t = useTranslations("Services");
+  const common = useTranslations("Common");
   const Heading = headingLevel === 2 ? "h2" : "h3";
 
   return (
     <article className={styles.card}>
       <div className={styles.heading}>
         <Heading className={styles.title}>{service.name}</Heading>
-        <span className={styles.price}>от {formatPrice(service.price)}</span>
+        <span className={styles.price}>
+          {common("priceFrom", { price: formatPrice(service.price) })}
+        </span>
       </div>
       <p className={styles.description}>{service.description}</p>
       <div className={styles.footer}>
@@ -27,14 +32,14 @@ export const ServiceCard = ({
             <circle cx="12" cy="12" r="10" />
             <polyline points="12 6 12 12 16 14" />
           </svg>
-          {service.durationMinutes} мин
+          {common("minutes", { count: service.durationMinutes })}
         </span>
         <Link
           className={styles.bookingLink}
           href={{ pathname: "/booking", query: { serviceId: service.id } }}
-          aria-label={"Записаться: " + service.name}
+          aria-label={t("bookService", { name: service.name })}
         >
-          Записаться
+          {common("book")}
           <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.icon}>
             <path d="m9 18 6-6-6-6" />
           </svg>

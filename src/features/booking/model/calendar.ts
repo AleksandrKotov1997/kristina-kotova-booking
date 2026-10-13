@@ -1,3 +1,6 @@
+import dayjs from "dayjs";
+import "dayjs/locale/ru";
+import "dayjs/locale/kk";
 import type { BookingCalendar } from "./types";
 export const parseCalendarDate = (date: string) => {
   const [year, month, day] = date.split("-").map(Number);
@@ -9,13 +12,10 @@ export const formatCalendarDate = (date: Date) =>
     String(date.getMonth() + 1).padStart(2, "0"),
     String(date.getDate()).padStart(2, "0"),
   ].join("-");
-const bookingDateFormatter = new Intl.DateTimeFormat("ru-KZ", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-export const formatBookingDate = (date: string) =>
-  bookingDateFormatter.format(parseCalendarDate(date));
+export const formatBookingDate = (date: string, locale = "ru") =>
+  dayjs(date)
+    .locale(locale === "kk" ? "kk" : "ru")
+    .format("D MMMM YYYY");
 
 export const isBookingDateSelectable = (
   date: string,

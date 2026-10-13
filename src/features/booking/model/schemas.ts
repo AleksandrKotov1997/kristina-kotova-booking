@@ -4,28 +4,33 @@ import { workingHoursSchema } from "@/features/workingHours/model/schemas";
 
 export const bookingDateSchema = z.iso.date();
 export const bookingTimeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
-export const bookingContactsSchema = z.object({
-  clientName: z
-    .string()
-    .trim()
-    .min(2, "Укажите имя, минимум 2 буквы.")
-    .max(100, "Имя слишком длинное.")
-    .regex(
-      /^\p{L}[\p{L}\p{M} '-]*$/u,
-      "Используйте буквы, пробел, дефис или апостроф.",
-    ),
-  clientPhone: z
-    .string()
-    .trim()
-    .transform((value) => value.replace(/[ ()-]/g, ""))
-    .pipe(
-      z
-        .string()
-        .regex(
-          /^\+[1-9]\d{10,14}$/,
-          "Введите телефон с кодом страны, например +7 701 123 45 67.",
-        ),
-    ),
+type BookingValidationMessages = {
+  nameShort: string;
+  nameLong: string;
+  nameCharacters: string;
+  phone: string;
+};
+export const createBookingContactsSchema = (
+  messages: BookingValidationMessages,
+) =>
+  z.object({
+    clientName: z
+      .string()
+      .trim()
+      .min(2, messages.nameShort)
+      .max(100, messages.nameLong)
+      .regex(/^\p{L}[\p{L}\p{M} '-]*$/u, messages.nameCharacters),
+    clientPhone: z
+      .string()
+      .trim()
+      .transform((value) => value.replace(/[ ()-]/g, ""))
+      .pipe(z.string().regex(/^\+[1-9]\d{10,14}$/, messages.phone)),
+  });
+export const bookingContactsSchema = createBookingContactsSchema({
+  nameShort: "Укажите имя, минимум 2 буквы.",
+  nameLong: "Имя слишком длинное.",
+  nameCharacters: "Используйте буквы, пробел, дефис или апостроф.",
+  phone: "Введите телефон с кодом страны, например +7 701 123 45 67.",
 });
 export const createBookingSchema = z.strictObject({
   ...bookingContactsSchema.shape,
@@ -65,6 +70,7 @@ export const bookingReceiptSchema = z.object({
   startTime: bookingTimeSchema,
   endTime: bookingTimeSchema,
   serviceName: z.string().min(1),
+  serviceNameKk: z.string().min(1).nullable().optional(),
   servicePrice: z.number().nonnegative(),
   durationMinutes: z.number().int().positive(),
 });

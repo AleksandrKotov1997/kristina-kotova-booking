@@ -1,13 +1,12 @@
 interface PublicNavigationItem {
   href: string;
-  label: string;
+  labelKey: "home" | "services" | "works" | "about" | "booking" | "contacts";
 }
-
 export const publicNavigationItems: PublicNavigationItem[] = [
-  { href: "/", label: "Главная" },
-  { href: "/services", label: "Услуги" },
-  { href: "/works", label: "Работы" },
-  { href: "/about", label: "О мастере" },
-  { href: "/booking", label: "Запись" },
-  { href: "/#contacts", label: "Контакты" },
+  { href: "/", labelKey: "home" },
+  { href: "/services", labelKey: "services" },
+  { href: "/works", labelKey: "works" },
+  { href: "/about", labelKey: "about" },
+  { href: "/booking", labelKey: "booking" },
+  { href: "/#contacts", labelKey: "contacts" },
 ];

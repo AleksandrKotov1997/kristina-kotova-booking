@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import styles from "./MasterIntroduction.module.css";
 
@@ -5,23 +6,18 @@ interface MasterIntroductionProps {
   headingId: string;
 }
 
-export const MasterIntroduction = ({ headingId }: MasterIntroductionProps) => (
-  <div>
-    <SectionEyebrow alignment="start">О мастере</SectionEyebrow>
-    <h2 className={styles.title} id={headingId}>
-      Привет, я <em>Кристина</em>
-    </h2>
-    <div className={styles.description}>
-      <p>
-        Я мастер по наращиванию и ламинированию ресниц и бровей в Астане. Уже
-        несколько лет помогаю девушкам просыпаться с красивым взглядом каждый
-        день — без лишних усилий по утрам.
-      </p>
-      <p>
-        Для меня важны аккуратность, индивидуальный подход и комфорт клиента.
-        Каждый визит — это не просто процедура, а время для себя в уютной
-        атмосфере.
-      </p>
+export const MasterIntroduction = ({ headingId }: MasterIntroductionProps) => {
+  const t = useTranslations("About");
+  return (
+    <div>
+      <SectionEyebrow alignment="start">{t("title")}</SectionEyebrow>
+      <h2 className={styles.title} id={headingId}>
+        {t("hello")} <em>{t("name")}</em>
+      </h2>
+      <div className={styles.description}>
+        <p>{t("introduction")}</p>
+        <p>{t("approach")}</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};

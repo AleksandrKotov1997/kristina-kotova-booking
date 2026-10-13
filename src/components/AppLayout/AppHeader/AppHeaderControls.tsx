@@ -1,9 +1,11 @@
 "use client";
 
 import { Button, Drawer } from "antd";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher/LanguageSwitcher";
 import { useEffect, useId, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ActionLink } from "@/components/ActionLink";
+import { PublicActionLink } from "@/components/ActionLink";
 import { AppHeaderNavigation } from "./AppHeaderNavigation";
 import styles from "./AppHeader.module.css";
 
@@ -13,12 +15,14 @@ export const AppHeaderControls = () => {
 };
 
 const HeaderMenu = () => {
+  const t = useTranslations("Navigation");
+  const common = useTranslations("Common");
   const menuId = useId();
   const [open, setOpen] = useState(false);
   const closeMenu = () => setOpen(false);
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1100px)");
+    const desktop = window.matchMedia("(min-width: 1280px)");
     const closeOnDesktop = (event: MediaQueryListEvent) => {
       if (event.matches) setOpen(false);
     };
@@ -29,9 +33,13 @@ const HeaderMenu = () => {
   return (
     <div className={styles.controls}>
       <AppHeaderNavigation className={styles.desktopNavigation} />
-      <ActionLink href="/booking" size="compact" className={styles.bookingLink}>
-        Записаться
-      </ActionLink>
+      <PublicActionLink
+        href="/booking"
+        size="compact"
+        className={styles.bookingLink}
+      >
+        {common("book")}
+      </PublicActionLink>
       <Button
         className={styles.menuButton}
         icon={
@@ -48,14 +56,15 @@ const HeaderMenu = () => {
             <path d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         }
-        aria-label="Открыть меню"
+        aria-label={t("openMenu")}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         onClick={() => setOpen(true)}
       />
+      <LanguageSwitcher />
       <Drawer
-        title="Меню"
+        title={t("menu")}
         open={open}
         onClose={closeMenu}
         size="min(100vw, 360px)"
@@ -65,12 +74,12 @@ const HeaderMenu = () => {
         <div id={menuId} className={styles.mobileMenu}>
           <AppHeaderNavigation
             className={styles.mobileNavigation}
-            ariaLabel="Мобильная навигация"
+            ariaLabel={t("mobileLabel")}
             onNavigate={closeMenu}
           />
-          <ActionLink href="/booking" onClick={closeMenu}>
-            Записаться онлайн
-          </ActionLink>
+          <PublicActionLink href="/booking" onClick={closeMenu}>
+            {common("bookOnline")}
+          </PublicActionLink>
         </div>
       </Drawer>
     </div>

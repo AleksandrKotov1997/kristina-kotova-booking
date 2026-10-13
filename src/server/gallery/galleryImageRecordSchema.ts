@@ -4,6 +4,7 @@ import { galleryImageSchema } from "@/features/gallery/model/schemas";
 export const galleryImageRecordSchema = z.object({
   id: galleryImageSchema.shape.id,
   title: galleryImageSchema.shape.title,
+  title_kk: galleryImageSchema.shape.title.nullable(),
   image_url: galleryImageSchema.shape.imageUrl,
   category: galleryImageSchema.shape.category,
   is_active: galleryImageSchema.shape.isActive,

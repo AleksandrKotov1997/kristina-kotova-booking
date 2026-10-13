@@ -1,37 +1,36 @@
-import { studioCity } from "@/features/studio/model/constants";
-import { ActionLink } from "@/components/ActionLink";
+import { useTranslations } from "next-intl";
+import { PublicActionLink } from "@/components/ActionLink";
 import { PageContainer } from "@/components/PageContainer";
 import { HomeHeroVisual } from "./HomeHeroVisual";
 import styles from "./HomeHero.module.css";
 
-const heroStatistics = [
-  { value: "500+", label: "Довольных клиентов" },
-  { value: "3 года", label: "Опыт работы" },
-  { value: "5★", label: "Рейтинг мастера" },
-];
-
 export const HomeHero = () => {
+  const t = useTranslations("Hero");
+  const common = useTranslations("Common");
+  const heroStatistics = [
+    { value: "500+", label: t("clients") },
+    { value: t("experienceValue"), label: t("experience") },
+    { value: "5★", label: t("rating") },
+  ];
   return (
     <section className={styles.hero} aria-labelledby="home-hero-title">
       <PageContainer className={styles.inner}>
         <div className={styles.content}>
-          <p className={styles.badge}>{studioCity} · Ресницы и брови</p>
+          <p className={styles.badge}>{t("badge")}</p>
 
           <h1 className={styles.title} id="home-hero-title">
-            <span>Ресницы, которые</span> <em>говорят за вас</em>
+            <span>{t("title")}</span> <em>{t("accent")}</em>
           </h1>
 
-          <p className={styles.description}>
-            Наращивание, ламинирование, коррекция и снятие ресниц. Архитектура и
-            ламинирование бровей. Индивидуальный подбор эффекта для каждого
-            взгляда.
-          </p>
+          <p className={styles.description}>{t("description")}</p>
 
           <div className={styles.actions}>
-            <ActionLink href="/booking">Записаться онлайн</ActionLink>
-            <ActionLink href="/services" variant="secondary">
-              Посмотреть услуги
-            </ActionLink>
+            <PublicActionLink href="/booking">
+              {common("bookOnline")}
+            </PublicActionLink>
+            <PublicActionLink href="/services" variant="secondary">
+              {t("viewServices")}
+            </PublicActionLink>
           </div>
 
           <dl className={styles.statistics}>

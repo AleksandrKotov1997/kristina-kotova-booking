@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import { useId, useState } from "react";
 import { Button, Empty, Skeleton } from "antd";
@@ -15,6 +16,8 @@ interface ServicesCatalogProps {
 export const ServicesCatalog = ({
   serviceHeadingLevel = 3,
 }: ServicesCatalogProps) => {
+  const t = useTranslations("Services");
+  const common = useTranslations("Common");
   const [category, setCategory] = useState<ServiceCategory>("lashes");
   const servicesQuery = useServices(category);
   const listId = useId();
@@ -24,7 +27,7 @@ export const ServicesCatalog = ({
       <div
         className={styles.categories}
         role="group"
-        aria-label="Категория услуг"
+        aria-label={t("categoryLabel")}
       >
         {serviceCategoryOptions.map((option) => (
           <button
@@ -35,7 +38,7 @@ export const ServicesCatalog = ({
             aria-controls={listId}
             onClick={() => setCategory(option.value)}
           >
-            {option.label}
+            {common(option.value)}
           </button>
         ))}
       </div>
@@ -43,7 +46,7 @@ export const ServicesCatalog = ({
         {servicesQuery.isPending ? (
           <>
             <p className={styles.loadingLabel} role="status">
-              Загрузка услуг…
+              {t("loading")}
             </p>
             <div className={styles.grid} aria-hidden="true">
               {[0, 1, 2].map((index) => (
@@ -55,25 +58,25 @@ export const ServicesCatalog = ({
           </>
         ) : servicesQuery.isError ? (
           <div className={styles.state} role="alert">
-            <p className={styles.stateTitle}>Не удалось загрузить услуги</p>
-            <p>Попробуйте обновить список ещё раз.</p>
+            <p className={styles.stateTitle}>{t("loadError")}</p>
+            <p>{t("retryHint")}</p>
             <Button
               className={styles.retryButton}
               loading={servicesQuery.isFetching}
               onClick={() => void servicesQuery.refetch()}
             >
-              Попробовать снова
+              {common("retry")}
             </Button>
           </div>
         ) : servicesQuery.data.length === 0 ? (
           <div className={styles.state} role="status">
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description="В этой категории пока нет доступных услуг"
+              description={t("empty")}
             />
           </div>
         ) : (
-          <ul className={styles.grid} aria-label="Доступные услуги">
+          <ul className={styles.grid} aria-label={t("availableLabel")}>
             {servicesQuery.data.map((service) => (
               <li className={styles.item} key={service.id}>
                 <ServiceCard
