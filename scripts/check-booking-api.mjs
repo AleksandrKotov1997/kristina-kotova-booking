@@ -17,7 +17,10 @@ const request = async (path, options) => {
 const post = (input) =>
   request("/api/bookings", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Origin: new URL(baseUrl).origin,
+    },
     body: JSON.stringify(input),
   });
 try {
@@ -108,7 +111,10 @@ try {
   );
   const invalidJson = await request("/api/bookings", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Origin: new URL(baseUrl).origin,
+    },
     body: "{",
   });
   assert.equal(invalidJson.status, 400);
@@ -134,6 +140,33 @@ try {
   });
   assert.equal(repeated.status, 201);
   assert.equal(repeated.body.data.id, winner.body.data.id);
+  const recover = (requestId) =>
+    request("/api/bookings/recovery", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: new URL(baseUrl).origin,
+      },
+      body: JSON.stringify({ requestId }),
+    });
+  const recovered = await recover(requestIds[winningIndex]);
+  assert.equal(recovered.status, 200);
+  assert.deepEqual(recovered.body.data, winner.body.data);
+  const losingIndex = winningIndex === 0 ? 1 : 0;
+  const missing = await recover(requestIds[losingIndex]);
+  assert.equal(missing.status, 200);
+  assert.equal(missing.body.data, null);
+  const lateSlot = initial.body.data.slots.find(
+    (slot) => slot.isAvailable && slot.startTime >= winner.body.data.endTime,
+  );
+  assert.ok(lateSlot);
+  const late = await post({
+    ...payload,
+    startTime: lateSlot.startTime,
+    requestId: requestIds[losingIndex],
+  });
+  assert.equal(late.status, 409);
+  assert.equal(late.body.error.code, "REQUEST_CLOSED");
   const refreshed = await request("/api/booking/availability?" + query);
   assert.ok(
     refreshed.body.data.slots
@@ -147,14 +180,16 @@ try {
   const privateResponse = await fetch(baseUrl + "/api/bookings");
   assert.equal(privateResponse.status, 405);
   console.log(
-    "Booking API: validation, concurrency 201/409, idempotency, pending occupancy and public privacy passed.",
+    "Booking API: validation, concurrency 201/409, idempotency, recovery, late-request rejection, pending occupancy and public privacy passed.",
   );
 } finally {
   const cleanupFile = join(temporaryDirectory, "cleanup.sql");
   const ids = requestIds.map((id) => "'" + id + "'::uuid").join(", ");
   writeFileSync(
     cleanupFile,
-    "delete from public.bookings where request_id in (" +
+    "delete from private.closed_booking_requests where request_id in (" +
+      ids +
+      "); delete from public.bookings where request_id in (" +
       ids +
       ") and client_name = 'Тест API';",
   );

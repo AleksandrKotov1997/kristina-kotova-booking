@@ -43,8 +43,8 @@
   --color-surface: #fdf8f4;
   --color-surface-muted: #f6e7dc;
 
-  --color-primary: #b5714a;
-  --color-primary-hover: #a65f3e;
+  --color-primary: #985735;
+  --color-primary-hover: #89492c;
   --color-primary-soft: #ead2c3;
   --color-primary-tint: rgba(181, 113, 74, 0.1);
 
@@ -69,8 +69,8 @@
   --color-accent-soft: #f3ded1;
 
   --color-text: #3d3530;
-  --color-text-muted: #8a756a;
-  --color-text-soft: #a67a63;
+  --color-text-muted: #786458;
+  --color-text-soft: #8b5b43;
   --color-text-light: #ffffff;
 
   --color-contact-bg: var(--color-text);
