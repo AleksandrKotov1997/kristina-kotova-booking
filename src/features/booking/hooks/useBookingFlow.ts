@@ -66,7 +66,10 @@ export const useBookingFlow = (selectionRequest: ServiceSelectionRequest) => {
     retry: false,
     onError: (error) => {
       const code = getBookingError(error).code;
-      if (code !== "UNAVAILABLE") recovery.forgetRequest();
+      if (code !== "UNAVAILABLE") {
+        lastRequest.current = null;
+        recovery.forgetRequest();
+      }
       if (code === "SLOT_UNAVAILABLE")
         void queryClient.invalidateQueries({ queryKey: bookingQueryKey });
     },
