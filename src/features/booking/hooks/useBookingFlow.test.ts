@@ -10,6 +10,7 @@ import {
   createBooking,
   getBookingAvailability,
   getBookingCalendar,
+  resolveBookingRequest,
 } from "../api/bookingApi";
 import {
   bookingAvailabilitySchema,
@@ -75,9 +76,11 @@ const setupFlow = async () => {
   const slot = available.slots[0];
   if (!slot) throw new Error("Missing fixture slot");
   act(() => hook.result.current.selectSlot(slot));
-  return { ...hook, client };
+  return { ...hook, client, wrapper };
 };
 beforeEach(() => {
+  sessionStorage.clear();
+  vi.mocked(resolveBookingRequest).mockReset().mockResolvedValue(null);
   vi.mocked(getServices).mockResolvedValue([service]);
   vi.mocked(getBookingCalendar).mockResolvedValue(calendar);
   vi.mocked(getBookingAvailability).mockResolvedValue(available);
@@ -86,6 +89,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+  vi.restoreAllMocks();
 });
 describe("booking submission recovery", () => {
   it("retries the same request when the first response is lost and the slot becomes occupied", async () => {
@@ -148,6 +152,105 @@ describe("booking submission recovery", () => {
     expect(hook.result.current.isSlotAvailable).toBe(false);
     act(() => hook.result.current.submitContacts(contacts));
     expect(createBooking).not.toHaveBeenCalled();
+    hook.client.clear();
+  });
+});
+
+describe("booking recovery after reload", () => {
+  it("restores a committed booking without sending another creation request", async () => {
+    vi.mocked(createBooking).mockRejectedValueOnce(new Error("Response lost"));
+    const first = await setupFlow();
+    act(() => first.result.current.submitContacts(contacts));
+    await waitFor(() =>
+      expect(first.result.current.canRetrySubmission).toBe(true),
+    );
+    const requestId = vi.mocked(createBooking).mock.calls[0]?.[0].requestId;
+    expect(sessionStorage.getItem("booking.pendingRequestId")).toBe(requestId);
+    expect(sessionStorage.length).toBe(1);
+    first.unmount();
+    first.client.clear();
+    vi.mocked(resolveBookingRequest).mockResolvedValueOnce(receipt);
+    const restored = renderHook(
+      () => useBookingFlow({ status: "requested", serviceId: service.id }),
+      { wrapper: first.wrapper },
+    );
+    await waitFor(() =>
+      expect(restored.result.current.receipt).toEqual(receipt),
+    );
+    expect(resolveBookingRequest).toHaveBeenCalledWith(requestId);
+    act(() => restored.result.current.submitContacts(contacts));
+    expect(createBooking).toHaveBeenCalledTimes(1);
+    first.client.clear();
+  });
+  it("keeps a new submission blocked while the previous result cannot be checked", async () => {
+    const requestId = crypto.randomUUID();
+    sessionStorage.setItem("booking.pendingRequestId", requestId);
+    vi.mocked(resolveBookingRequest).mockRejectedValue(new Error("Offline"));
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    const wrapper = ({ children }: { children: ReactNode }) =>
+      createElement(QueryClientProvider, { client }, children);
+    const hook = renderHook(
+      () => useBookingFlow({ status: "requested", serviceId: service.id }),
+      { wrapper },
+    );
+    await waitFor(() =>
+      expect(hook.result.current.recovery.state.status).toBe("error"),
+    );
+    act(() => hook.result.current.submitContacts(contacts));
+    expect(createBooking).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem("booking.pendingRequestId")).toBe(requestId);
+    client.clear();
+  });
+  it("releases a definitively missing attempt and uses a fresh identifier", async () => {
+    const previousId = crypto.randomUUID();
+    sessionStorage.setItem("booking.pendingRequestId", previousId);
+    vi.mocked(createBooking).mockResolvedValueOnce(receipt);
+    const hook = await setupFlow();
+    await waitFor(() =>
+      expect(hook.result.current.recovery.state).toMatchObject({
+        status: "ready",
+        wasNotCreated: true,
+      }),
+    );
+    expect(sessionStorage.getItem("booking.pendingRequestId")).toBeNull();
+    act(() => hook.result.current.submitContacts(contacts));
+    await waitFor(() => expect(hook.result.current.receipt).toEqual(receipt));
+    expect(vi.mocked(createBooking).mock.calls[0]?.[0].requestId).not.toBe(
+      previousId,
+    );
+    hook.client.clear();
+  });
+  it("does not send a booking if its recovery identifier cannot be saved", async () => {
+    const hook = await setupFlow();
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("Storage blocked", "SecurityError");
+    });
+    act(() => hook.result.current.submitContacts(contacts));
+    expect(hook.result.current.recovery.state.status).toBe("error");
+    expect(createBooking).not.toHaveBeenCalled();
+    hook.client.clear();
+  });
+  it("keeps recovery safe if browser storage becomes unavailable during submission", async () => {
+    vi.mocked(createBooking).mockRejectedValueOnce(
+      new AxiosError("Conflict", "ERR_BAD_REQUEST", undefined, undefined, {
+        status: 409,
+        statusText: "Conflict",
+        headers: {},
+        config: { headers: new AxiosHeaders() },
+        data: { error: { code: "SLOT_UNAVAILABLE", message: "Unavailable" } },
+      }),
+    );
+    const hook = await setupFlow();
+    vi.spyOn(Storage.prototype, "removeItem").mockImplementation(() => {
+      throw new DOMException("Storage blocked", "SecurityError");
+    });
+    act(() => hook.result.current.submitContacts(contacts));
+    await waitFor(() => expect(hook.result.current.booking.isError).toBe(true));
+    expect(hook.result.current.recovery.state.status).toBe("error");
+    expect(sessionStorage.getItem("booking.pendingRequestId")).not.toBeNull();
+    expect(createBooking).toHaveBeenCalledTimes(1);
     hook.client.clear();
   });
 });

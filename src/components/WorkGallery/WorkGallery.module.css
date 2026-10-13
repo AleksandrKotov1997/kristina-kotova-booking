@@ -24,3 +24,41 @@
     gap: var(--space-3);
   }
 }
+
+/* Navigation is rendered through imageRender to give the buttons Russian names. */
+.preview:global(.ant-image-preview) > button:global(.ant-image-preview-switch) {
+  display: none;
+}
+.previousPhoto,
+.nextPhoto {
+  position: absolute;
+  pointer-events: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: var(--touch-target-size);
+  height: var(--touch-target-size);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: rgb(0 0 0 / 25%);
+  color: var(--color-text-light);
+  font-size: 18px;
+  cursor: pointer;
+}
+.previousPhoto {
+  left: var(--space-4);
+}
+.nextPhoto {
+  right: var(--space-4);
+}
+.previousPhoto:disabled,
+.nextPhoto:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.previousPhoto:focus-visible,
+.nextPhoto:focus-visible {
+  outline: 2px solid var(--color-text-light);
+  outline-offset: 2px;
+}

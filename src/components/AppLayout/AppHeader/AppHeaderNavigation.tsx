@@ -1,7 +1,7 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { publicNavigationItems } from "../navigation";
 import styles from "./AppHeader.module.css";
 
@@ -15,6 +15,20 @@ export const AppHeaderNavigation = ({
   ariaLabel?: string;
 }) => {
   const pathname = usePathname();
+  const [areContactsVisible, setAreContactsVisible] = useState(false);
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const contacts = document.getElementById("contacts");
+    if (!contacts) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setAreContactsVisible(entry?.isIntersecting ?? false);
+      },
+      { rootMargin: "-80px 0px 0px" },
+    );
+    observer.observe(contacts);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   return (
     <nav
@@ -23,9 +37,11 @@ export const AppHeaderNavigation = ({
     >
       {publicNavigationItems.map((item) => {
         const isActive =
-          pathname === item.href ||
-          (item.href !== "/" && pathname.startsWith(`${item.href}/`));
-
+          item.href === "/#contacts"
+            ? pathname === "/" && areContactsVisible
+            : (pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href + "/"))) &&
+              !(pathname === "/" && areContactsVisible);
         return (
           <Link
             key={item.href}

@@ -18,9 +18,12 @@ import {
   useBookingAvailability,
   useBookingCalendar,
 } from "./useBookingQueries";
+import { useBookingRecovery } from "./useBookingRecovery";
 
 export const useBookingFlow = (selectionRequest: ServiceSelectionRequest) => {
   const router = useRouter();
+  const recovery = useBookingRecovery();
+  const isRecoveryReady = recovery.state.status === "ready";
   const [isChoosingService, startServiceTransition] = useTransition();
   const queryClient = useQueryClient();
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -62,7 +65,9 @@ export const useBookingFlow = (selectionRequest: ServiceSelectionRequest) => {
     mutationFn: createBooking,
     retry: false,
     onError: (error) => {
-      if (getBookingError(error).code === "SLOT_UNAVAILABLE")
+      const code = getBookingError(error).code;
+      if (code !== "UNAVAILABLE") recovery.forgetRequest();
+      if (code === "SLOT_UNAVAILABLE")
         void queryClient.invalidateQueries({ queryKey: bookingQueryKey });
     },
     onSuccess: (result) => {
@@ -74,7 +79,10 @@ export const useBookingFlow = (selectionRequest: ServiceSelectionRequest) => {
     booking.isError &&
     getBookingError(booking.error).code === "UNAVAILABLE" &&
     booking.variables !== undefined;
+  const isSelectionLocked =
+    !isRecoveryReady || booking.isPending || canRetrySubmission;
   const selectService = (service: Service) => {
+    if (isSelectionLocked) return;
     setServiceId(service.id);
     setDate(null);
     setSlot(null);
@@ -86,16 +94,21 @@ export const useBookingFlow = (selectionRequest: ServiceSelectionRequest) => {
     );
   };
   const selectDate = (selectedDate: string) => {
+    if (isSelectionLocked) return;
     setDate(selectedDate);
     setSlot(null);
     booking.reset();
   };
   const selectSlot = (selectedSlot: BookingSlot) => {
+    if (isSelectionLocked) return;
     setSlot(selectedSlot);
     booking.reset();
   };
   const submitContacts = (values: BookingContacts) => {
     if (
+      recovery.state.status !== "ready" ||
+      receipt ||
+      recovery.state.receipt ||
       !selectedService ||
       !date ||
       !slot ||
@@ -119,8 +132,20 @@ export const useBookingFlow = (selectionRequest: ServiceSelectionRequest) => {
       startTime: slot.startTime,
       requestId: sameRequest ? previous.requestId : crypto.randomUUID(),
     };
+    if (!recovery.rememberRequest(input.requestId)) return;
     lastRequest.current = input;
     booking.mutate(input);
+  };
+  const checkSubmissionResult = async () => {
+    const result = await recovery.checkResult();
+    if (result.status === "ready" && !result.receipt) {
+      lastRequest.current = null;
+      booking.reset();
+      setDate(null);
+      setSlot(null);
+      setStep(2);
+      void queryClient.invalidateQueries({ queryKey: bookingQueryKey });
+    }
   };
   return {
     step: selectedService ? step : 1,
@@ -136,7 +161,11 @@ export const useBookingFlow = (selectionRequest: ServiceSelectionRequest) => {
     contacts,
     setContacts,
     canRetrySubmission,
-    receipt,
+    receipt:
+      receipt ??
+      (recovery.state.status === "ready" ? recovery.state.receipt : null),
+    recovery,
+    checkSubmissionResult,
     booking,
     isSlotAvailable,
     selectService,

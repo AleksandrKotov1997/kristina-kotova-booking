@@ -4,6 +4,7 @@ import { Button, Skeleton } from "antd";
 import { ActionLink } from "@/components/ActionLink";
 import type { ServiceSelectionRequest } from "@/features/services/model/serviceSelection";
 import { getBookingError } from "../../api/bookingError";
+import { bookingStatusLabels } from "../../model/bookingStatus";
 import { useBookingFlow } from "../../hooks/useBookingFlow";
 import { BookingContactsForm } from "../BookingContactsForm/BookingContactsForm";
 import { BookingDateTime } from "../BookingDateTime/BookingDateTime";
@@ -26,6 +27,30 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
     stepHeading.current?.focus({ preventScroll: true });
     stepHeading.current?.scrollIntoView({ block: "start" });
   }, [navigationKey]);
+  if (flow.recovery.state.status === "checking")
+    return (
+      <div
+        className={[styles.booking, styles.card, styles.state].join(" ")}
+        role="status"
+        aria-busy="true"
+      >
+        <h2 className={styles.title}>Проверяем результат отправки…</h2>
+        <p>Дождитесь проверки, чтобы не создать повторную заявку.</p>
+      </div>
+    );
+  if (flow.recovery.state.status === "error")
+    return (
+      <div
+        className={[styles.booking, styles.card, styles.state].join(" ")}
+        role="alert"
+      >
+        <h2 className={styles.title}>Нужно проверить предыдущую отправку</h2>
+        <p>{flow.recovery.state.message}</p>
+        <Button onClick={() => void flow.checkSubmissionResult()}>
+          Повторить проверку
+        </Button>
+      </div>
+    );
   if (receipt)
     return (
       <div className={styles.success} role="status">
@@ -33,11 +58,12 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
           ✓
         </span>
         <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
-          Заявка отправлена
+          {receipt.status === "pending" ? "Заявка отправлена" : "Ваша запись"}
         </h2>
         <p>
-          Заявка отправлена. Мастер свяжется с вами в течение 10 минут для
-          уточнения и подтверждения записи.
+          {receipt.status === "pending"
+            ? "Мастер свяжется с вами в рабочее время — ежедневно с 10:00 до 20:00 — для уточнения и подтверждения записи."
+            : "Статус записи: " + bookingStatusLabels[receipt.status]}
         </p>
         <BookingSummary
           serviceName={receipt.serviceName}
@@ -47,7 +73,9 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
           startTime={receipt.startTime}
           endTime={receipt.endTime}
         />
-        <ActionLink href="/">На главную</ActionLink>
+        <ActionLink href="/" onClick={flow.recovery.forgetRequest}>
+          На главную
+        </ActionLink>
       </div>
     );
   return (
@@ -67,6 +95,12 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
         ))}
       </ol>
       <div className={styles.card}>
+        {flow.recovery.state.wasNotCreated && (
+          <p className={styles.notice} role="status">
+            Предыдущая заявка не сохранилась. Выберите удобное время и отправьте
+            её заново.
+          </p>
+        )}
         {flow.services.isPending || flow.calendar.isPending ? (
           <div aria-busy="true">
             <p role="status">Загружаем каталог и расписание…</p>
@@ -170,6 +204,11 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
                   startTime={slot.startTime}
                   endTime={slot.endTime}
                 />
+                {flow.canRetrySubmission && (
+                  <Button onClick={() => void flow.checkSubmissionResult()}>
+                    Проверить результат отправки
+                  </Button>
+                )}
                 <BookingContactsForm
                   defaultValues={flow.contacts}
                   isSending={flow.booking.isPending}

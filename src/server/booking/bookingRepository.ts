@@ -6,6 +6,7 @@ import {
   bookingReceiptSchema,
 } from "@/features/booking/model/schemas";
 import type { CreateBookingInput } from "@/features/booking/model/types";
+
 export const getBookingCalendar = async () => {
   const response = await createSupabaseRestClient().post<unknown>(
     "/rpc/get_booking_calendar",
@@ -19,10 +20,7 @@ export const getBookingAvailability = async (
 ) => {
   const response = await createSupabaseRestClient().post<unknown>(
     "/rpc/get_booking_availability",
-    {
-      selected_service_id: serviceId,
-      selected_date: date,
-    },
+    { selected_service_id: serviceId, selected_date: date },
   );
   return bookingAvailabilitySchema.parse(response.data);
 };
@@ -39,4 +37,11 @@ export const createBooking = async (input: CreateBookingInput) => {
     },
   );
   return bookingReceiptSchema.parse(response.data);
+};
+export const resolveBookingRequest = async (requestId: string) => {
+  const response = await createSupabaseRestClient().post<unknown>(
+    "/rpc/resolve_booking_request",
+    { request_id: requestId },
+  );
+  return bookingReceiptSchema.nullable().parse(response.data);
 };
