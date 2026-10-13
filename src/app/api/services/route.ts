@@ -8,7 +8,12 @@ export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
   const query = servicesQuerySchema.safeParse(Object.fromEntries(searchParams));
 
-  if (!query.success || searchParams.getAll("category").length > 1) {
+  if (
+    !query.success ||
+    Array.from(searchParams.keys()).some(
+      (key) => searchParams.getAll(key).length > 1,
+    )
+  ) {
     return NextResponse.json(
       { error: { message: "Некорректные параметры каталога услуг." } },
       { status: 400 },

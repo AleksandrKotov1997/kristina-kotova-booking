@@ -6,12 +6,15 @@ import { createSupabaseRestClient } from "@/shared/supabase/createSupabaseRestCl
 import { serviceRecordSchema } from "../serviceRecordSchema";
 import { transformService } from "../transformers/transformService";
 
-export const getActiveServices = async ({ category }: ServicesQuery) => {
+export const getActiveServices = async ({
+  category,
+  locale = "ru",
+}: ServicesQuery) => {
   const supabaseClient = createSupabaseRestClient();
   const response = await supabaseClient.get<unknown>("/services", {
     params: {
       select:
-        "id,category,name,description,price,duration_minutes,is_active,sort_order,created_at,updated_at",
+        "id,category,name,name_kk,description,description_kk,price,duration_minutes,is_active,sort_order,created_at,updated_at",
       is_active: "eq.true",
       category: category ? "eq." + category : undefined,
       order: "sort_order.asc,name.asc,id.asc",
@@ -21,5 +24,5 @@ export const getActiveServices = async ({ category }: ServicesQuery) => {
   return z
     .array(serviceRecordSchema)
     .parse(response.data)
-    .map(transformService);
+    .map((record) => transformService(record, locale));
 };

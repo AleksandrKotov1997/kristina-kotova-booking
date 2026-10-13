@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { localeSchema } from "@/shared/i18n/locales";
 
 export const galleryCategorySchema = z.enum(["lashes", "brows"]);
 
@@ -14,6 +15,7 @@ export const galleryImageSchema = z.object({
 });
 
 export const galleryQuerySchema = z.strictObject({
+  locale: localeSchema.optional(),
   category: galleryCategorySchema.optional(),
   limit: z
     .string()

@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "antd";
+import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
-import { bookingContactsSchema } from "../../model/schemas";
+import { createBookingContactsSchema } from "../../model/schemas";
 import type { BookingContacts, BookingContactsInput } from "../../model/types";
 import styles from "./BookingContactsForm.module.css";
 interface BookingContactsFormProps {
@@ -11,6 +13,7 @@ interface BookingContactsFormProps {
   lockContacts: boolean;
   error: string | null;
   onSubmit: (values: BookingContacts) => void;
+  onChange: (values: BookingContactsInput) => void;
   onBack: (values: BookingContactsInput) => void;
 }
 export const BookingContactsForm = ({
@@ -21,17 +24,36 @@ export const BookingContactsForm = ({
   error,
   onSubmit,
   onBack,
+  onChange,
 }: BookingContactsFormProps) => {
+  const t = useTranslations("Booking");
+  const common = useTranslations("Common");
   const {
     register,
+    subscribe,
     handleSubmit,
     getValues,
     formState: { errors },
   } = useForm<BookingContactsInput, undefined, BookingContacts>({
     defaultValues,
-    resolver: zodResolver(bookingContactsSchema),
+    resolver: zodResolver(
+      createBookingContactsSchema({
+        nameShort: t("validation.nameShort"),
+        nameLong: t("validation.nameLong"),
+        nameCharacters: t("validation.nameCharacters"),
+        phone: t("validation.phone"),
+      }),
+    ),
     mode: "onBlur",
   });
+  useEffect(
+    () =>
+      subscribe({
+        formState: { values: true },
+        callback: ({ values }) => onChange(values),
+      }),
+    [subscribe, onChange],
+  );
   return (
     <form
       method="post"
@@ -40,10 +62,10 @@ export const BookingContactsForm = ({
       noValidate
     >
       <div className={styles.field}>
-        <label htmlFor="booking-client-name">Имя</label>
+        <label htmlFor="booking-client-name">{t("name")}</label>
         <input
           id="booking-client-name"
-          placeholder="Анна"
+          placeholder={t("namePlaceholder")}
           autoComplete="given-name"
           maxLength={100}
           aria-invalid={!!errors.clientName}
@@ -60,7 +82,7 @@ export const BookingContactsForm = ({
         )}
       </div>
       <div className={styles.field}>
-        <label htmlFor="booking-client-phone">Телефон / WhatsApp</label>
+        <label htmlFor="booking-client-phone">{t("phone")}</label>
         <input
           id="booking-client-phone"
           type="tel"
@@ -75,7 +97,7 @@ export const BookingContactsForm = ({
           {...register("clientPhone")}
         />
         <p className={styles.hint} id="booking-phone-hint">
-          Номер с кодом страны — мастер свяжется с вами для подтверждения.
+          {t("phoneHint")}
         </p>
         {errors.clientPhone && (
           <p className={styles.error} id="booking-phone-error" role="alert">
@@ -90,8 +112,7 @@ export const BookingContactsForm = ({
       )}
       {!canSubmit && !isSending && (
         <p className={styles.error} role="alert">
-          Выбранное время больше недоступно. Вернитесь к календарю и выберите
-          свободный слот.
+          {t("slotChanged")}
         </p>
       )}
       <div className={styles.actions}>
@@ -99,7 +120,7 @@ export const BookingContactsForm = ({
           disabled={isSending || lockContacts}
           onClick={() => onBack(getValues())}
         >
-          ← Назад
+          {common("back")}
         </Button>
         <Button
           type="primary"
@@ -108,7 +129,7 @@ export const BookingContactsForm = ({
           disabled={!canSubmit}
           className={styles.submit}
         >
-          Отправить заявку
+          {t("submit")}
         </Button>
       </div>
     </form>

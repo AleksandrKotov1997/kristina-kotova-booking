@@ -7,17 +7,34 @@ interface ConsecutiveDaysGroup {
   hoursLabel: string;
 }
 
-export const groupWorkingHours = (schedule: WorkingDaySchedule[]) => {
+interface WorkingHoursLabels {
+  weekdays: Record<Weekday, string>;
+  daily: string;
+  unknown: string;
+  dayOff: string;
+  hours: (start: string, end: string) => string;
+}
+const russianLabels: WorkingHoursLabels = {
+  weekdays: weekdayLabels,
+  daily: "Ежедневно",
+  unknown: "Уточняется",
+  dayOff: "Выходной",
+  hours: (start, end) => "с " + start + " до " + end + " часов",
+};
+export const groupWorkingHours = (
+  schedule: WorkingDaySchedule[],
+  labels: WorkingHoursLabels = russianLabels,
+) => {
   const scheduleByDay = new Map(schedule.map((day) => [day.dayOfWeek, day]));
   const groups: ConsecutiveDaysGroup[] = [];
 
   for (const weekday of weekdays) {
     const day = scheduleByDay.get(weekday);
     const hoursLabel = !day
-      ? "Уточняется"
+      ? labels.unknown
       : day.isWorkingDay
-        ? "с " + day.startTime + " до " + day.endTime + " часов"
-        : "Выходной";
+        ? labels.hours(day.startTime, day.endTime)
+        : labels.dayOff;
     const previousGroup = groups.at(-1);
 
     if (previousGroup && previousGroup.hoursLabel === hoursLabel) {
@@ -35,12 +52,12 @@ export const groupWorkingHours = (schedule: WorkingDaySchedule[]) => {
     key: group.firstDay,
     daysLabel:
       worksEveryDay && groups.length === 1
-        ? "Ежедневно"
+        ? labels.daily
         : group.firstDay === group.lastDay
-          ? weekdayLabels[group.firstDay]
-          : weekdayLabels[group.firstDay] +
+          ? labels.weekdays[group.firstDay]
+          : labels.weekdays[group.firstDay] +
             " – " +
-            weekdayLabels[group.lastDay],
+            labels.weekdays[group.lastDay],
     hoursLabel: group.hoursLabel,
   }));
 };

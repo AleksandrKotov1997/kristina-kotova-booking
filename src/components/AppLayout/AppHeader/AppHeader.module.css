@@ -20,7 +20,7 @@
   flex: 1;
   align-items: center;
   justify-content: center;
-  gap: var(--space-8);
+  gap: var(--space-5);
   min-width: 0;
 }
 
@@ -76,7 +76,7 @@
   background: var(--color-surface-muted);
 }
 
-@media (max-width: 1099px) {
+@media (max-width: 1279px) {
   .desktopNavigation {
     display: none;
   }
@@ -101,9 +101,18 @@
   }
 }
 
-@media (max-width: 1099px) {
+@media (max-width: 1279px) {
   .drawer :global(.ant-drawer-close) {
     width: var(--touch-target-size);
     height: var(--touch-target-size);
+  }
+}
+
+@media (max-width: 479px) {
+  .inner {
+    gap: 8px;
+  }
+  .controls {
+    gap: 4px;
   }
 }

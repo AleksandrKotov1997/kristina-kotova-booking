@@ -8,20 +8,16 @@ import {
   type ReactNode,
 } from "react";
 import { Image } from "antd";
+import { useTranslations } from "next-intl";
 import { GalleryImageCard } from "@/components/GalleryImageCard";
 import type { GalleryImage } from "@/features/gallery/model/types";
 import styles from "./WorkGallery.module.css";
 
 type WorkGalleryProps = { images: GalleryImage[] };
-const previewLabels: Record<string, string> = {
-  flipY: "Отразить по вертикали",
-  flipX: "Отразить по горизонтали",
-  rotateLeft: "Повернуть влево",
-  rotateRight: "Повернуть вправо",
-  zoomOut: "Уменьшить",
-  zoomIn: "Увеличить",
-};
-const translatePreviewControls = (controls: ReactNode) => {
+const translatePreviewControls = (
+  controls: ReactNode,
+  previewLabels: Record<string, string>,
+) => {
   if (!isValidElement<{ children?: ReactNode }>(controls)) return controls;
   return cloneElement(
     controls,
@@ -54,6 +50,15 @@ const PreviewIcon = ({ label, path }: { label: string; path: string }) => (
   </svg>
 );
 export const WorkGallery = ({ images }: WorkGalleryProps) => {
+  const t = useTranslations("Gallery");
+  const previewLabels = {
+    flipY: t("flipY"),
+    flipX: t("flipX"),
+    rotateLeft: t("rotateLeft"),
+    rotateRight: t("rotateRight"),
+    zoomOut: t("zoomOut"),
+    zoomIn: t("zoomIn"),
+  };
   const [currentImage, setCurrentImage] = useState(0);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   return (
@@ -63,44 +68,39 @@ export const WorkGallery = ({ images }: WorkGalleryProps) => {
       preview={{
         open: isPreviewOpen,
         current: currentImage,
-        alt: images[currentImage]?.title ?? "Фотография ресниц и бровей",
+        alt: images[currentImage]?.title ?? t("fallbackAlt"),
         onOpenChange: setIsPreviewOpen,
         onChange: setCurrentImage,
         closeIcon: (
-          <PreviewIcon label="Закрыть фотографию" path="M6 6L18 18M18 6L6 18" />
+          <PreviewIcon label={t("close")} path="M6 6L18 18M18 6L6 18" />
         ),
-        actionsRender: translatePreviewControls,
+        actionsRender: (controls) =>
+          translatePreviewControls(controls, previewLabels),
         imageRender: (image) => (
           <>
             {image}
             <button
               type="button"
               className={styles.previousPhoto}
-              aria-label="Предыдущая фотография"
-              title="Предыдущая фотография"
+              aria-label={t("previous")}
+              title={t("previous")}
               disabled={currentImage === 0}
               onClick={() => setCurrentImage(currentImage - 1)}
             >
               <span aria-hidden="true">
-                <PreviewIcon
-                  label="Предыдущая фотография"
-                  path="M15 4L7 12L15 20"
-                />
+                <PreviewIcon label={t("previous")} path="M15 4L7 12L15 20" />
               </span>
             </button>
             <button
               type="button"
               className={styles.nextPhoto}
-              aria-label="Следующая фотография"
-              title="Следующая фотография"
+              aria-label={t("next")}
+              title={t("next")}
               disabled={currentImage === images.length - 1}
               onClick={() => setCurrentImage(currentImage + 1)}
             >
               <span aria-hidden="true">
-                <PreviewIcon
-                  label="Следующая фотография"
-                  path="M9 4L17 12L9 20"
-                />
+                <PreviewIcon label={t("next")} path="M9 4L17 12L9 20" />
               </span>
             </button>
           </>
@@ -112,7 +112,7 @@ export const WorkGallery = ({ images }: WorkGalleryProps) => {
         ),
       }}
     >
-      <ul className={styles.grid} aria-label="Фотографии ресниц и бровей">
+      <ul className={styles.grid} aria-label={t("photos")}>
         {images.map((image, index) => (
           <li className={styles.item} key={image.id}>
             <GalleryImageCard

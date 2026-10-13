@@ -12,6 +12,7 @@ export const studioContacts = studioContactsSchema.parse({
   location: {
     city: studioCity,
     address: "ул. Ұлы Дала, 33/1",
+    addressKk: "Ұлы Дала көш., 33/1",
     directions: [],
   },
 });

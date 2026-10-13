@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { PageContainer } from "@/components/PageContainer";
 import { PublicPageHeading } from "@/components/PublicPageHeading";
 import { BookingFlow } from "@/features/booking/components/BookingFlow/BookingFlow";
@@ -8,24 +9,27 @@ interface BookingViewProps {
   selectionRequest: ServiceSelectionRequest;
 }
 
-export const BookingView = ({ selectionRequest }: BookingViewProps) => (
-  <>
-    <PublicPageHeading
-      eyebrow="Онлайн-запись"
-      title="Запись на процедуру"
-      description="Выберите услугу, дату и удобное время. После отправки заявки Кристина подтвердит запись."
-    />
-    <section className={styles.selection} aria-label="Онлайн-запись">
-      <PageContainer>
-        <BookingFlow
-          key={
-            selectionRequest.status === "requested"
-              ? selectionRequest.serviceId
-              : selectionRequest.status
-          }
-          selectionRequest={selectionRequest}
-        />
-      </PageContainer>
-    </section>
-  </>
-);
+export const BookingView = ({ selectionRequest }: BookingViewProps) => {
+  const t = useTranslations("Booking");
+  return (
+    <>
+      <PublicPageHeading
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("description")}
+      />
+      <section className={styles.selection} aria-label={t("eyebrow")}>
+        <PageContainer>
+          <BookingFlow
+            key={
+              selectionRequest.status === "requested"
+                ? selectionRequest.serviceId
+                : selectionRequest.status
+            }
+            selectionRequest={selectionRequest}
+          />
+        </PageContainer>
+      </section>
+    </>
+  );
+};

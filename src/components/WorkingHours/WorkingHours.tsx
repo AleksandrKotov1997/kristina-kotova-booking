@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import { Button, Skeleton } from "antd";
 import { useWorkingHours } from "@/features/workingHours/hooks/useWorkingHours";
@@ -6,15 +7,16 @@ import { groupWorkingHours } from "@/features/workingHours/model/groupWorkingHou
 import styles from "./WorkingHours.module.css";
 
 export const WorkingHours = () => {
+  const t = useTranslations("WorkingHours");
   const workingHoursQuery = useWorkingHours();
 
   return (
     <div className={styles.card} aria-busy={workingHoursQuery.isPending}>
-      <h3 className={styles.title}>Режим работы</h3>
+      <h3 className={styles.title}>{t("title")}</h3>
       {workingHoursQuery.isPending ? (
         <>
           <p className={styles.message} role="status">
-            Загрузка режима работы…
+            {t("loading")}
           </p>
           <div aria-hidden="true">
             <Skeleton active title={false} paragraph={{ rows: 2 }} />
@@ -22,7 +24,7 @@ export const WorkingHours = () => {
         </>
       ) : workingHoursQuery.isError ? (
         <div role="alert">
-          <p className={styles.message}>Не удалось загрузить режим работы.</p>
+          <p className={styles.message}>{t("error")}</p>
           <Button
             type="link"
             size="small"
@@ -30,14 +32,28 @@ export const WorkingHours = () => {
             loading={workingHoursQuery.isFetching}
             onClick={() => void workingHoursQuery.refetch()}
           >
-            Повторить
+            {t("retry")}
           </Button>
         </div>
       ) : workingHoursQuery.data.length === 0 ? (
-        <p className={styles.message}>Режим работы уточняется</p>
+        <p className={styles.message}>{t("pending")}</p>
       ) : (
         <dl className={styles.schedule}>
-          {groupWorkingHours(workingHoursQuery.data).map((group) => (
+          {groupWorkingHours(workingHoursQuery.data, {
+            weekdays: {
+              1: t("weekdays.1"),
+              2: t("weekdays.2"),
+              3: t("weekdays.3"),
+              4: t("weekdays.4"),
+              5: t("weekdays.5"),
+              6: t("weekdays.6"),
+              7: t("weekdays.7"),
+            },
+            daily: t("daily"),
+            unknown: t("unknown"),
+            dayOff: t("dayOff"),
+            hours: (start, end) => t("hours", { start, end }),
+          }).map((group) => (
             <div className={styles.row} key={group.key}>
               <dt>{group.daysLabel}</dt>
               <dd>{group.hoursLabel}</dd>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- Reload the document after session expiry to discard stale protected-route state. */
 "use client";
 import { Button, Modal } from "antd";
 import {

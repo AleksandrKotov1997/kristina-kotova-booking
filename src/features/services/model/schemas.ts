@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { localeSchema } from "@/shared/i18n/locales";
 
 export const serviceCategorySchema = z.enum(["lashes", "brows"]);
 
@@ -16,6 +17,7 @@ export const serviceSchema = z.object({
 });
 
 export const servicesQuerySchema = z.strictObject({
+  locale: localeSchema.optional(),
   category: serviceCategorySchema.optional(),
 });
 

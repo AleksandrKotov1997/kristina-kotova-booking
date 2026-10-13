@@ -1,10 +1,10 @@
 "use client";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 import { Button, Skeleton } from "antd";
-import { ActionLink } from "@/components/ActionLink";
+import { PublicActionLink } from "@/components/ActionLink";
 import type { ServiceSelectionRequest } from "@/features/services/model/serviceSelection";
-import { getBookingError } from "../../api/bookingError";
-import { bookingStatusLabels } from "../../model/bookingStatus";
+import { getPublicBookingErrorCode } from "../../model/localizedBookingError";
 import { useBookingFlow } from "../../hooks/useBookingFlow";
 import { BookingContactsForm } from "../BookingContactsForm/BookingContactsForm";
 import { BookingDateTime } from "../BookingDateTime/BookingDateTime";
@@ -15,6 +15,9 @@ interface BookingFlowProps {
   selectionRequest: ServiceSelectionRequest;
 }
 export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
+  const t = useTranslations("Booking");
+  const locale = useLocale();
+  const common = useTranslations("Common");
   const flow = useBookingFlow(selectionRequest);
   const { selectedService, date, slot, receipt } = flow;
   const stepHeading = useRef<HTMLHeadingElement>(null);
@@ -34,8 +37,8 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
         role="status"
         aria-busy="true"
       >
-        <h2 className={styles.title}>Проверяем результат отправки…</h2>
-        <p>Дождитесь проверки, чтобы не создать повторную заявку.</p>
+        <h2 className={styles.title}>{t("checking")}</h2>
+        <p>{t("checkingHint")}</p>
       </div>
     );
   if (flow.recovery.state.status === "error")
@@ -44,10 +47,10 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
         className={[styles.booking, styles.card, styles.state].join(" ")}
         role="alert"
       >
-        <h2 className={styles.title}>Нужно проверить предыдущую отправку</h2>
-        <p>{flow.recovery.state.message}</p>
+        <h2 className={styles.title}>{t("checkNeeded")}</h2>
+        <p>{t(`recovery.${flow.recovery.state.code}`)}</p>
         <Button onClick={() => void flow.checkSubmissionResult()}>
-          Повторить проверку
+          {t("checkAgain")}
         </Button>
       </div>
     );
@@ -58,30 +61,34 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
           ✓
         </span>
         <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
-          {receipt.status === "pending" ? "Заявка отправлена" : "Ваша запись"}
+          {receipt.status === "pending" ? t("sent") : t("yourBooking")}
         </h2>
         <p>
           {receipt.status === "pending"
-            ? "Мастер свяжется с вами в рабочее время — ежедневно с 10:00 до 20:00 — для уточнения и подтверждения записи."
-            : "Статус записи: " + bookingStatusLabels[receipt.status]}
+            ? t("confirmation")
+            : t("status", { status: t(`statuses.${receipt.status}`) })}
         </p>
         <BookingSummary
-          serviceName={receipt.serviceName}
+          serviceName={
+            locale === "kk"
+              ? (receipt.serviceNameKk ?? t("service"))
+              : receipt.serviceName
+          }
           price={receipt.servicePrice}
           durationMinutes={receipt.durationMinutes}
           date={receipt.date}
           startTime={receipt.startTime}
           endTime={receipt.endTime}
         />
-        <ActionLink href="/" onClick={flow.recovery.forgetRequest}>
-          На главную
-        </ActionLink>
+        <PublicActionLink href="/" onClick={flow.recovery.forgetRequest}>
+          {common("home")}
+        </PublicActionLink>
       </div>
     );
   return (
     <div className={styles.booking}>
-      <ol className={styles.steps} aria-label="Этапы записи">
-        {["Услуга", "Дата и время", "Контакты"].map((label, index) => (
+      <ol className={styles.steps} aria-label={t("steps")}>
+        {[t("service"), t("dateTime"), t("contacts")].map((label, index) => (
           <li
             key={label}
             className={flow.step >= index + 1 ? styles.activeStep : ""}
@@ -97,21 +104,20 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
       <div className={styles.card}>
         {flow.recovery.state.wasNotCreated && (
           <p className={styles.notice} role="status">
-            Предыдущая заявка не сохранилась. Выберите удобное время и отправьте
-            её заново.
+            {t("notCreated")}
           </p>
         )}
         {flow.services.isPending || flow.calendar.isPending ? (
           <div aria-busy="true">
-            <p role="status">Загружаем каталог и расписание…</p>
+            <p role="status">{t("loading")}</p>
             <Skeleton active />
           </div>
         ) : flow.services.isError || flow.calendar.isError ? (
           <div role="alert" className={styles.state}>
             <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
-              Не удалось загрузить запись
+              {t("loadError")}
             </h2>
-            <p>Попробуйте получить актуальные услуги и расписание ещё раз.</p>
+            <p>{t("retryHint")}</p>
             <Button
               loading={flow.services.isFetching || flow.calendar.isFetching}
               onClick={() => {
@@ -119,26 +125,26 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
                 void flow.calendar.refetch();
               }}
             >
-              Попробовать снова
+              {common("retry")}
             </Button>
           </div>
         ) : flow.services.data.length === 0 ? (
-          <p role="status">Услуги сейчас недоступны для записи.</p>
+          <p role="status">{t("noServices")}</p>
         ) : (
           <>
             {flow.step === 1 && (
               <>
                 <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
-                  Выберите услугу
+                  {t("chooseService")}
                 </h2>
                 {selectionRequest.status === "invalid" && (
                   <p className={styles.notice} role="alert">
-                    Некорректная ссылка на услугу. Выберите процедуру ниже.
+                    {t("invalidLink")}
                   </p>
                 )}
                 {flow.serviceId && !selectedService && (
                   <p className={styles.notice} role="alert">
-                    Услуга сейчас недоступна. Выберите другую процедуру.
+                    {t("serviceUnavailable")}
                   </p>
                 )}
                 <BookingServicePicker
@@ -153,7 +159,7 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
                     disabled={!selectedService || flow.isChoosingService}
                     onClick={() => flow.setStep(2)}
                   >
-                    Далее →
+                    {common("next")}
                   </Button>
                 </div>
               </>
@@ -161,10 +167,13 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
             {flow.step === 2 && selectedService && (
               <>
                 <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
-                  Выберите дату и время
+                  {t("chooseDate")}
                 </h2>
                 <p className={styles.service}>
-                  {selectedService.name} · {selectedService.durationMinutes} мин
+                  {selectedService.name} ·{" "}
+                  {common("minutes", {
+                    count: selectedService.durationMinutes,
+                  })}
                 </p>
                 <BookingDateTime
                   calendar={flow.calendar.data}
@@ -179,14 +188,16 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
                   onRetry={() => void flow.availability.refetch()}
                 />
                 <div className={styles.actions}>
-                  <Button onClick={() => flow.setStep(1)}>← Назад</Button>
+                  <Button onClick={() => flow.setStep(1)}>
+                    {common("back")}
+                  </Button>
                   <Button
                     type="primary"
                     className={styles.primary}
                     disabled={!flow.isSlotAvailable}
                     onClick={() => flow.setStep(3)}
                   >
-                    Далее →
+                    {common("next")}
                   </Button>
                 </div>
               </>
@@ -194,7 +205,7 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
             {flow.step === 3 && selectedService && date && slot && (
               <>
                 <h2 ref={stepHeading} tabIndex={-1} className={styles.title}>
-                  Ваши контакты
+                  {t("yourContacts")}
                 </h2>
                 <BookingSummary
                   serviceName={selectedService.name}
@@ -206,7 +217,7 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
                 />
                 {flow.canRetrySubmission && (
                   <Button onClick={() => void flow.checkSubmissionResult()}>
-                    Проверить результат отправки
+                    {t("checkResult")}
                   </Button>
                 )}
                 <BookingContactsForm
@@ -216,10 +227,13 @@ export const BookingFlow = ({ selectionRequest }: BookingFlowProps) => {
                   lockContacts={flow.canRetrySubmission}
                   error={
                     flow.booking.isError
-                      ? getBookingError(flow.booking.error).message
+                      ? t(
+                          `errors.${getPublicBookingErrorCode(flow.booking.error)}`,
+                        )
                       : null
                   }
                   onSubmit={flow.submitContacts}
+                  onChange={flow.setContacts}
                   onBack={(values) => {
                     flow.setContacts(values);
                     flow.booking.reset();

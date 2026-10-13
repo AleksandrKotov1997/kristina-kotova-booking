@@ -72,3 +72,20 @@
     gap: var(--space-1);
   }
 }
+
+@media (max-width: 479px) {
+  .brand:not(.footer) {
+    gap: 6px;
+  }
+  .brand:not(.footer) .logo {
+    width: 28px;
+    height: 28px;
+  }
+  .brand:not(.footer) .name {
+    font-size: 15px;
+  }
+  .brand:not(.footer) .subtitle {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+}

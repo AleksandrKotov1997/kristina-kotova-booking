@@ -10,6 +10,8 @@ export const serviceRecordSchema = serviceSchema
     price: true,
   })
   .extend({
+    name_kk: z.string().trim().min(1).nullable(),
+    description_kk: z.string().trim().min(1).nullable(),
     duration_minutes: serviceSchema.shape.durationMinutes,
     is_active: serviceSchema.shape.isActive,
     sort_order: serviceSchema.shape.sortOrder,

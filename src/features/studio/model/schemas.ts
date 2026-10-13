@@ -23,6 +23,7 @@ export const studioContactsSchema = z.object({
     .object({
       city: textSchema,
       address: textSchema,
+      addressKk: textSchema,
       directions: z.array(textSchema),
     })
     .nullable(),

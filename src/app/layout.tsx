@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 import { DM_Serif_Display, Nunito } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Providers } from "./providers";
 import "./globals.css";
 
 const nunito = Nunito({
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-nunito",
   display: "swap",
 });
@@ -34,13 +35,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   return (
-    <html lang="ru" className={`${nunito.variable} ${dmSerifDisplay.variable}`}>
+    <html
+      lang={locale}
+      className={`${nunito.variable} ${dmSerifDisplay.variable}`}
+    >
       <body>
         <AntdRegistry>
           <Providers>{children}</Providers>
